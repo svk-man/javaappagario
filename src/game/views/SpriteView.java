@@ -7,12 +7,21 @@ import java.awt.image.BufferedImage;
 import game.models.Sprite;
 
 /**
- *
+ * Представление спрайта
+ * 
  * @author mypc
  */
 public class SpriteView {
+    /**
+     * Спрайт
+     */
     private Sprite sprite;
     
+    /**
+     * Конструктор
+     * 
+     * @param s - спрайт
+     */
     public SpriteView(Sprite s) {
         sprite = s;
     }
@@ -40,6 +49,7 @@ public class SpriteView {
             int max = (int)(Math.max(icon.getWidth(), icon.getHeight()) * coef);
             BufferedImage bi = new BufferedImage(max, max, BufferedImage.TYPE_INT_ARGB);
 
+            // Отрисовать овал
             g2d = bi.createGraphics();               
             g2d.setColor(color);
             g2d.fillOval(0, 0, bi.getWidth(), bi.getHeight());
@@ -52,19 +62,31 @@ public class SpriteView {
             double dcoef = coef - 0.05;
             g2d.scale(dcoef, dcoef); 
             
+            // Отрисовать иконку
             int iconHeight = (int)(icon.getHeight() * dcoef);
             int iconWidth = (int)(icon.getWidth() * dcoef);
             g2d.drawImage(icon, (max - iconWidth) / 2 + 7, (max - iconHeight) / 2, null);
 
+            // Установка изображения спрайту
             sprite.setImage(bi);
         }
     }
     
+    /**
+     * Установка цвета представления спрайта
+     * 
+     * @param color - цвет (Color)
+     */
     public void setColor(Color color) {
         this.color = color;
         repaint();
     }
 
+    /**
+     * Установка иконки представления спрайта
+     * 
+     * @param icon - иконка (BufferedImage)
+     */
     public void setIcon(BufferedImage icon) {
         this.icon = icon;
         repaint();
