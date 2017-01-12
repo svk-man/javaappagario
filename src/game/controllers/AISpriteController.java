@@ -26,7 +26,7 @@ public class AISpriteController extends BasicSpriteController {
         Point playerPos = player.getPosition();
         Point spritePos = sprite.getPosition();
         double dist = GameMath.distance(spritePos, playerPos);
-        if (dist > AISpriteController.MAX_DISTANCE) {
+        if (dist > AISpriteController.MAX_DISTANCE_BETWEEN_AI_AND_PLAYER) {
             int angle = GameMath.angle(sprite.getPosition(), player.getPosition());
             sprite.setDirection(angle);
         }
@@ -36,7 +36,7 @@ public class AISpriteController extends BasicSpriteController {
      */
     Sprite player;
     /**
-     * Максимальное расстояние
+     * Максимальное расстояние между спрайтом искусственного интеллекта(ИИ) и спрайтом игрока
      */
-    static final int MAX_DISTANCE = 240;
+    static final int MAX_DISTANCE_BETWEEN_AI_AND_PLAYER = 240;
 }
