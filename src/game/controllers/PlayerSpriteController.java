@@ -7,9 +7,9 @@ import game.models.Sprite;
 /**
  * Контроллер игрока
  */
-public class PlayerController extends Controller {
+public class PlayerSpriteController extends BasicSpriteController {
     
-    public PlayerController(Game game, Sprite s) {
+    public PlayerSpriteController(Game game, Sprite s) {
         super(game, s);
     }
     /**

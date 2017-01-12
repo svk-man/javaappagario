@@ -6,9 +6,9 @@ import game.models.Sprite;
 /**
  * Базовый контроллер для спрайта - отвечает за внутреннюю его логику
  */
-public class Controller {
+public class BasicSpriteController {
     
-    public Controller(Game game, Sprite s) {
+    public BasicSpriteController(Game game, Sprite s) {
         this.sprite = s;
         this.game = game;
     }

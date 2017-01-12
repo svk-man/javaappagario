@@ -3,9 +3,9 @@ package game;
 import game.models.Sprite;
 import com.golden.gamedev.object.SpriteGroup;
 import com.golden.gamedev.object.background.ImageBackground;
-import game.controllers.AIController;
-import game.controllers.Controller;
-import game.controllers.PlayerController;
+import game.controllers.AISpriteController;
+import game.controllers.BasicSpriteController;
+import game.controllers.PlayerSpriteController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -40,7 +40,7 @@ public class Game extends com.golden.gamedev.Game {
     /**
      * Список контроллеров
      */
-    private final List<Controller> controllers = new ArrayList<>();
+    private final List<BasicSpriteController> controllers = new ArrayList<>();
     /**
      * Число ботов
      */
@@ -67,7 +67,7 @@ public class Game extends com.golden.gamedev.Game {
                 botSprite.getSpriteView().setIcon(botImage);
                 botSprite.setPosition(new Point(160 + r.nextInt(320), 120 + r.nextInt(240)));
                 spriteGroup.add(botSprite);
-                controllers.add(new AIController(this, botSprite, playerSprite));
+                controllers.add(new AISpriteController(this, botSprite, playerSprite));
             }
             
             bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")));
@@ -76,7 +76,7 @@ public class Game extends com.golden.gamedev.Game {
             spriteGroup.setBackground(bg);            
             spriteGroup.add(playerSprite);
             
-            controllers.add(new PlayerController(this, playerSprite));
+            controllers.add(new PlayerSpriteController(this, playerSprite));
         } catch (IOException ex) {
             Logger.getLogger("main").log(Level.SEVERE, null, ex);
         }

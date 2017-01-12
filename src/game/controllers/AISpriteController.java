@@ -9,9 +9,9 @@ import java.awt.Point;
 /**
  * Контроллер игрока
  */
-public class AIController extends Controller {
+public class AISpriteController extends BasicSpriteController {
     
-    public AIController(Game game, Sprite s, Sprite p) {
+    public AISpriteController(Game game, Sprite s, Sprite p) {
         super(game, s);
         this.player = p;
         int angle = GameMath.angle(sprite.getPosition(), player.getPosition());
@@ -26,7 +26,7 @@ public class AIController extends Controller {
         Point playerPos = player.getPosition();
         Point spritePos = sprite.getPosition();
         double dist = GameMath.distance(spritePos, playerPos);
-        if (dist > AIController.MAX_DISTANCE) {
+        if (dist > AISpriteController.MAX_DISTANCE) {
             int angle = GameMath.angle(sprite.getPosition(), player.getPosition());
             sprite.setDirection(angle);
         }
