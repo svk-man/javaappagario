@@ -11,11 +11,11 @@ import java.awt.Point;
  */
 public class AISpriteController extends BasicSpriteController {
     
-    public AISpriteController(Game game, Sprite s, Sprite p) {
-        super(game, s);
-        this.player = p;
-        int angle = GameMath.angle(sprite.getPosition(), player.getPosition());
-        s.setDirection(angle);
+    public AISpriteController(Game game, Sprite ai, Sprite player) {
+        super(game, ai);
+        this.player = player;
+        int angle = GameMath.angle(sprite.getPosition(), this.player.getPosition());
+        ai.setDirection(angle);
     }
     /**
      * Базовая реализация лишь проверяет, что спрайт не вышел за поля
