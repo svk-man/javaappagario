@@ -35,7 +35,7 @@ public class Game extends com.golden.gamedev.Game {
      * Группа спрайтов, участвующих в коллизиях
      */
     private final SpriteGroup spriteGroup = new SpriteGroup("Objects");
-    
+       
     /**
      * Спрайт игрока
      */
@@ -154,6 +154,63 @@ public class Game extends com.golden.gamedev.Game {
         p.x += bg.getX();
         p.y += bg.getY();
         return p;
+    }
+    
+    /**
+     * Сгенерировать спрайты вокруг игрока при заданном радиусе
+     * 
+     * @param spriteImage - изображение спрайта
+     * @param player - игрок
+     * @param radius - радиус порождения
+     * @param quantity - количество спрайтов, которые нужно породить
+     * @param targetSpriteGroup - группа спрайтов, в которую в конечном итоге нужно будет положить спрайты
+     * @param spriteGroups - группы спрайтов, с которыми нельзя пересекаться 
+     */
+    public void generateSpritesAroundPlayer(
+        BufferedImage spriteImage,
+        Sprite player,
+        int radius,
+        int quantity,
+        SpriteGroup targetSpriteGroup,
+        SpriteGroup[] spriteGroups
+    ) {
+        int generatedCount = 0;                              // Число сгенерированных спрайтов
+        // Сгенерированные спрайты
+        List <com.golden.gamedev.object.Sprite> generatedSprites = new ArrayList <com.golden.gamedev.object.Sprite>();
+        
+        Random r1 = new Random();
+        Random r2 = new Random();
+        while (generatedCount < quantity) {
+            int x = r1.nextInt(radius);
+            int y = r2.nextInt(radius);
+            
+            if (x >= 0 && x <= Game.totalWidth && y >= 0 && y <= Game.totalHeight) {
+                com.golden.gamedev.object.Sprite generatedSprite = new com.golden.gamedev.object.Sprite(spriteImage, x, y);
+                
+                // Определить, пересекается ли сгенерированный спрайт хотя бы
+                // с одним спрайтом из групп спрайтов, с которыми нельзя пересекаться
+                boolean collide = false;
+                for (SpriteGroup spriteGroup : spriteGroups) {
+                    // Получить спрайты очередной спрайтовой группы
+                    com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+                    
+                    for (com.golden.gamedev.object.Sprite sprite : sprites) {
+                        collide = collide || GameMath.collide(sprite, generatedSprite);
+                    }
+                }
+                
+                // Определить, пересекается ли сгенерированный спрайт с ранее сгенерированными спрайтами
+                for (com.golden.gamedev.object.Sprite sprite : generatedSprites) {
+                    collide = collide || GameMath.collide(sprite, generatedSprite);
+                }
+                if (!collide) {
+                    generatedCount++;
+                    targetSpriteGroup.add(generatedSprite);
+                    generatedSprites.add(generatedSprite);
+                }
+            }
+            
+        }
     }
     
     /**
