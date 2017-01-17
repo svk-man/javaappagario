@@ -84,4 +84,16 @@ public class GameMath {
         int newY = p.y - 2 * (p.y - center.y);
         return new Point(newX, newY);
     }
+    
+    /**
+     * Возвращает центр спрайта
+     * @param sprite - спрайт
+     * @return центр спрайта (Point)
+     */
+    public static Point getCenter(com.golden.gamedev.object.Sprite sprite) {
+        return new Point (
+            (int)(sprite.getX() + sprite.getWidth()/2),
+            (int)(sprite.getY() + sprite.getHeight()/2)
+        );
+    }
 }
