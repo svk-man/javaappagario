@@ -96,4 +96,27 @@ public class GameMath {
             (int)(sprite.getY() + sprite.getHeight()/2)
         );
     }
+    
+    /**
+     * Определяет, сталкиваются ли два спрайта
+     * @param sprite1 - спрайт 1
+     * @param sprite2 - спрайт 2
+     * @return результат проверки (boolean)
+     */
+    public static boolean collide(
+        com.golden.gamedev.object.Sprite sprite1,
+        com.golden.gamedev.object.Sprite sprite2
+    ){
+        // Определяем центры спрайтов
+        Point center1 = GameMath.getCenter(sprite1);
+        Point center2 = GameMath.getCenter(sprite2);
+        
+        // Определяем расстояние между двумя центрами
+        double distance = GameMath.distance(center1, center2);
+        
+        // Определяем сумму радиусов этих спрайтов
+        double radiusSum = sprite1.getWidth()/2.0 + sprite2.getWidth()/2.0;
+        
+        return radiusSum >= distance;
+    }
 }
