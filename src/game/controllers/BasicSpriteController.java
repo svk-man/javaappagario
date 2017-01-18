@@ -39,11 +39,11 @@ public class BasicSpriteController {
         // Проверить на выход за границы поля
         if (sprite.getX() <= 0 && sprite.getHorizontalSpeed() < 0)
             sprite.setHorizontalSpeed(0);
-        if (sprite.getX() + sprite.getWidth() >= Game.totalWidth && sprite.getHorizontalSpeed() > 0)
+        if (sprite.getX() + sprite.getWidth() >= game.getBgWidth() && sprite.getHorizontalSpeed() > 0)
             sprite.setHorizontalSpeed(0);
         if (sprite.getY() <= 0 && sprite.getVerticalSpeed() < 0)
             sprite.setVerticalSpeed(0);
-        if (sprite.getY() + sprite.getHeight() >= Game.totalHeight && sprite.getVerticalSpeed() > 0)
+        if (sprite.getY() + sprite.getHeight() >= game.getBgHeight() && sprite.getVerticalSpeed() > 0)
             sprite.setVerticalSpeed(0);
     }
 }

@@ -32,10 +32,28 @@ public class Game extends com.golden.gamedev.Game {
     private ImageBackground bg;
     
     /**
+     * Получить ширину игрового фона, т.е. полную ширину игры
+     * 
+     * @return ширина (int)
+     */
+    public int getBgWidth() {
+        return bg.getWidth();
+    }
+    
+    /**
+     * Получить высоту игрового фона, т.е. полную высоту игры
+     * 
+     * @return высота (int)
+     */
+    public int getBgHeight() {
+        return bg.getHeight();
+    }
+    
+    /**
      * Группа спрайтов, участвующих в коллизиях
      */
     private final SpriteGroup spriteGroup = new SpriteGroup("Objects");
-       
+    
     /**
      * Спрайт игрока
      */
@@ -136,7 +154,7 @@ public class Game extends com.golden.gamedev.Game {
     public void render(Graphics2D g) {
         bg.render(g);                   // Рендеринг игрового фона         
         spriteGroup.render(g);          // Рендеринг спрайтовой группы
-        
+
         // Установка спрайта в центр игрвого фона
         if (playerSprite != null)
         {
@@ -184,7 +202,7 @@ public class Game extends com.golden.gamedev.Game {
             int x = r1.nextInt(radius);
             int y = r2.nextInt(radius);
             
-            if (x >= 0 && x <= Game.totalWidth && y >= 0 && y <= Game.totalHeight) {
+            if (x >= 0 && x <= this.getBgWidth() && y >= 0 && y <= this.getBgHeight()) {
                 com.golden.gamedev.object.Sprite generatedSprite = new com.golden.gamedev.object.Sprite(spriteImage, x, y);
                 
                 // Определить, пересекается ли сгенерированный спрайт хотя бы
@@ -221,14 +239,4 @@ public class Game extends com.golden.gamedev.Game {
     public Dimension dimensions() {
         return new Dimension(640, 480);
     }
-    
-    /**
-     * Полная ширина игрового поля
-     */
-    public static int totalWidth = 6000;
-    
-    /**
-     * Полная высота игрового поля
-     */
-    public static int totalHeight = 6000;
 }
