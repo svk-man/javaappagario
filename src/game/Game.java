@@ -55,6 +55,11 @@ public class Game extends com.golden.gamedev.Game {
     private final SpriteGroup spriteGroup = new SpriteGroup("Objects");
     
     /**
+     * Группа препятствий, участвующих в коллизиях
+     */
+    private final SpriteGroup obstacleGroup = new SpriteGroup("Obstacles");
+       
+    /**
      * Спрайт игрока
      */
     private Sprite playerSprite;
@@ -78,6 +83,7 @@ public class Game extends com.golden.gamedev.Game {
             // Загрузка изображений игрока и ботов
             BufferedImage playerImage = ImageIO.read(new File("resources/PRIMITIVE_PLANT.png"));
             BufferedImage botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
+            BufferedImage obstacleImage = ImageIO.read(new File("resources/OBSTACLE.png"));
             
             // Создание спрайта игрока
             playerSprite = new Sprite();
@@ -121,6 +127,13 @@ public class Game extends com.golden.gamedev.Game {
             
             // Добавить контроллер игрока для спрайта игрока
             controllers.add(new PlayerSpriteController(this, playerSprite));
+            
+            // Сгенерировать препятствия вокруг игрока
+            SpriteGroup[] groupsForObstacle = { spriteGroup };
+            this.generateSpritesAroundPlayer(obstacleImage, playerSprite, this.getBgWidth(), 15, obstacleGroup, groupsForObstacle);
+            
+            // Прикрепить группу препятствий к игровому фону
+            obstacleGroup.setBackground(bg);
         } catch (IOException ex) {
             Logger.getLogger("main").log(Level.SEVERE, null, ex);
         }
@@ -154,7 +167,8 @@ public class Game extends com.golden.gamedev.Game {
     public void render(Graphics2D g) {
         bg.render(g);                   // Рендеринг игрового фона         
         spriteGroup.render(g);          // Рендеринг спрайтовой группы
-
+        obstacleGroup.render(g);        // Рендеринг группы препятствий
+        
         // Установка спрайта в центр игрвого фона
         if (playerSprite != null)
         {
