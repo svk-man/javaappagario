@@ -227,7 +227,8 @@ public class Game extends com.golden.gamedev.Game {
                     com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
                     
                     for (com.golden.gamedev.object.Sprite sprite : sprites) {
-                        collide = collide || GameMath.collide(sprite, generatedSprite);
+                        if (sprite != null) {
+                            collide = collide || GameMath.collide(sprite, generatedSprite);
                     }
                 }
                 
