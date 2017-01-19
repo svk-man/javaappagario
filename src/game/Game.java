@@ -105,6 +105,11 @@ public class Game extends com.golden.gamedev.Game {
     private final int agarRespawnQuantity = 25;
     
     /**
+     * Менеджер коллизий
+     */
+    private CollisionManager manager; 
+    
+    /**
      * Инициализация игровых переменных
      */
     @Override
@@ -168,6 +173,8 @@ public class Game extends com.golden.gamedev.Game {
             
             // Прикрепить группу агар к игровому фону
             agarGroup.setBackground(bg);
+            
+            manager = new CollisionManager(this, spriteGroup, obstacleGroup, agarGroup);
         } catch (IOException ex) {
             Logger.getLogger("main").log(Level.SEVERE, null, ex);
         }
@@ -195,6 +202,9 @@ public class Game extends com.golden.gamedev.Game {
         
         // Обновить игровой фон
         bg.update(elapsedTime);
+        
+        // Проверить коллизии
+        manager.checkCollision();
     }
 
     /**
