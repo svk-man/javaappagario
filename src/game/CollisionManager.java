@@ -31,6 +31,11 @@ public class CollisionManager {
     private final Game game;
     
     /**
+     * Группа спрайтов
+     */
+    private final SpriteGroup spriteGroup;
+    
+    /**
      * Группа агар
      */
     private final SpriteGroup agarGroup;
@@ -45,6 +50,7 @@ public class CollisionManager {
      */
     public CollisionManager(Game game, SpriteGroup spriteGroup, SpriteGroup obstacleGroup, SpriteGroup agarGroup) {
         this.game = game;
+        this.spriteGroup = spriteGroup;
         this.agarGroup = agarGroup;
         o2o = new ObjectToObstacleCollisionGroup(spriteGroup, obstacleGroup);
         o2a = new ObjectToAgarCollisionGroup(spriteGroup, agarGroup);
@@ -77,8 +83,36 @@ public class CollisionManager {
      */
     public void collidedObjectToAgar(Sprite first, Sprite second) {
         if (first == game.playerSprite()) {
-            game.incrementCollectedAgar();
+            // Поедание агара игроком
+            game.playerSprite().incrementCollectedAgar();
+            if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size())) {
+                game.playerSprite().incrementSize();
+            }
+            
             agarGroup.remove(second);
+        } else {
+            // Поедание агара врагом
+            // Получить спрайты спрайтовой группы
+            Sprite[] sprites = spriteGroup.getSprites();
+        
+            // Определить индекс спрайта
+            boolean isFound = false;
+            int index = -1;
+            for (Sprite sprite : sprites) {
+                if (!isFound && sprite != null && sprite != game.playerSprite()) {
+                    index++;
+                    isFound = isFound || sprite == first;
+                }
+            }
+        
+            if (isFound) {
+                game.botSprite(index).incrementCollectedAgar();
+                if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size())) {
+                    game.botSprite(index).incrementSize();
+                }
+            
+                agarGroup.remove(second);
+            }
         }
     }
     

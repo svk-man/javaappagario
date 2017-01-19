@@ -126,9 +126,19 @@ public class Game extends com.golden.gamedev.Game {
     private final int agarRespawnQuantity = 25;
     
     /**
-     * Число съеденного агара игроком
+     * Список ботов
      */
-    private int agarCollected = 0;
+    private final List<Sprite> botsSpriteList = new ArrayList<>();
+    
+    /**
+     * Возвращает бота по заданному индексу
+     * 
+     * @param index - индекс
+     * @return бот (Sprite)
+     */
+    public Sprite botSprite(int index) {
+        return botsSpriteList.get(index);
+    }
     
     /**
      * Менеджер коллизий
@@ -174,6 +184,8 @@ public class Game extends com.golden.gamedev.Game {
                 spriteGroup.add(botSprite);
                 // Добавление контроллера ИИ спрайту бота
                 controllers.add(new AISpriteController(this, botSprite, playerSprite));
+                // Добавление бота в список ботов
+                botsSpriteList.add(botSprite);
             }
             
             // Генерация игрового фона
@@ -270,7 +282,17 @@ public class Game extends com.golden.gamedev.Game {
         GameFontManager gfm = new GameFontManager();
         Font font = new Font("Dialog", Font.PLAIN, 27);
         GameFont f = gfm.getFont(font);
-        f.drawString(g, "Число съеденного агара: " + String.valueOf(agarCollected), 0, 0);
+        f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
+        
+        // Вывод на экран числа съеденных агар врагами
+        if (botsCount > 0) {
+            f.drawString(g, "У врагов:", 0, 50);
+        }
+        
+        for(int i = 0; i < botsCount; i++) {
+            String text = "Враг " + String.valueOf(i) + ": " + String.valueOf(botsSpriteList.get(i).agarCollected());
+            f.drawString(g, text, 0, i * 50 + 100);
+        }
     }
     
     /**
@@ -353,13 +375,6 @@ public class Game extends com.golden.gamedev.Game {
             SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
         }
-    }
-    
-    /**
-     * Увеличивает число съеденного агара игроком
-     */
-    public void incrementCollectedAgar() {
-        agarCollected += 1;
     }
     
     /**

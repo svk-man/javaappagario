@@ -21,6 +21,48 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
     private SpriteView spriteView = new SpriteView(this);
     
     /**
+     * Число съеденных агар
+     */
+    private int agarCollected = 0;
+    
+    /**
+     * Возвращает число съеденных агар
+     * 
+     * @return число съеденных агар (int)
+     */
+    public int agarCollected() {
+        return agarCollected;
+    }
+    
+    /**
+     * Увеличивает число съеденных агар на единицу
+     */
+    public void incrementCollectedAgar() {
+        agarCollected += 1;
+    }
+    
+    /**
+     * Размер спрайта
+     */
+    private int size = 1;
+    
+    /**
+     * Возвращает размер спрайта
+     * 
+     * @return размер спрайта (int)
+     */
+    public int size() {
+        return size;
+    }
+    
+    /**
+     * Увеличивает размер спрайта на единицу
+     */
+    public void incrementSize() {
+        size++;
+    }
+    
+    /**
      * Получить представление спрайта
      * 
      * @return - представление спрайта
@@ -100,5 +142,15 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
      */
     public int getDirection() {
         return angle;
+    }
+    
+    /**
+     * Обновить спрайт
+     * 
+     * @param elapsedTime - время, прошедшее с момента последнего обновления
+     */
+    public void update(long elapsedTime) {
+        super.update(elapsedTime);
+        spriteView.repaint();
     }
 }

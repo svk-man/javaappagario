@@ -42,10 +42,10 @@ public class SpriteView {
     private Graphics2D g2d;
         
     // Перерисовать фон объекта
-    private void repaint() {
+    public void repaint() {
         if (color != null && icon != null) {
             // Зарисовать площадь нужным цветом
-            double coef = 0.5;
+            double coef = 0.5 + 0.1 * sprite.size();
             int max = (int)(Math.max(icon.getWidth(), icon.getHeight()) * coef);
             BufferedImage bi = new BufferedImage(max, max, BufferedImage.TYPE_INT_ARGB);
 
