@@ -53,6 +53,17 @@ public class CollisionManager {
     }
     
     /**
+     * Устанавливает реакцию на результат коллизии с препятствием
+     * 
+     * @param first - спрайт 1 из группы 1
+     * @param second - спрайт 2 из группы 2
+     */
+    public void collidedObjectToObstacle(Sprite first, Sprite second) {
+        first.setX(first.getOldX());
+        first.setY(first.getOldY());        
+    }
+    
+    /**
      * Модуль обнаружения коллизий объект - препятствие
      */
     private class ObjectToObstacleCollisionGroup extends BasicCollisionGroup {
@@ -75,7 +86,7 @@ public class CollisionManager {
          */
         @Override
         public void collided(Sprite first, Sprite second) {
-            
+            CollisionManager.this.collidedObjectToObstacle(first, second);
         }
         
     }
