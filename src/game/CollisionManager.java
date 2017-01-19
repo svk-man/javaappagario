@@ -99,20 +99,10 @@ public class CollisionManager {
             agarGroup.remove(second);
         } else {
             // Поедание агара врагом
-            // Получить спрайты спрайтовой группы
-            Sprite[] sprites = spriteGroup.getSprites();
-        
             // Определить индекс спрайта
-            boolean isFound = false;
-            int index = -1;
-            for (Sprite sprite : sprites) {
-                if (!isFound && sprite != null && sprite != game.playerSprite()) {
-                    index++;
-                    isFound = isFound || sprite == first;
-                }
-            }
-        
-            if (isFound) {
+            int index = game.spriteInSpriteGroup(first);
+
+            if (index > -1) {
                 game.botSprite(index).incrementCollectedAgar();
                 if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size() + 1)) {
                     game.botSprite(index).incrementSize();
