@@ -26,6 +26,11 @@ public class CollisionManager {
     private final ObjectToAgarCollisionGroup o2a;
     
     /**
+     * Модуль обнаружения коллизий объект - спрайт
+     */
+    private final ObjectToSpriteCollisionGroup o2s;
+    
+    /**
      * Игра
      */
     private final Game game;
@@ -54,6 +59,7 @@ public class CollisionManager {
         this.agarGroup = agarGroup;
         o2o = new ObjectToObstacleCollisionGroup(spriteGroup, obstacleGroup);
         o2a = new ObjectToAgarCollisionGroup(spriteGroup, agarGroup);
+        o2s = new ObjectToSpriteCollisionGroup(spriteGroup, spriteGroup);
     }
     
     /**
@@ -62,6 +68,7 @@ public class CollisionManager {
     public void checkCollision() {
         o2o.checkCollision();
         o2a.checkCollision();
+        o2s.checkCollision();
     }
     
     /**
@@ -85,7 +92,7 @@ public class CollisionManager {
         if (first == game.playerSprite()) {
             // Поедание агара игроком
             game.playerSprite().incrementCollectedAgar();
-            if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size())) {
+            if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size() + 1)) {
                 game.playerSprite().incrementSize();
             }
             
@@ -107,7 +114,7 @@ public class CollisionManager {
         
             if (isFound) {
                 game.botSprite(index).incrementCollectedAgar();
-                if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size())) {
+                if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size() + 1)) {
                     game.botSprite(index).incrementSize();
                 }
             
@@ -115,6 +122,41 @@ public class CollisionManager {
             }
         }
     }
+    
+    /**
+     * Устанавливает реакцию на результат коллизии со спрайтом
+     * 
+     * @param first - спрайт 1 из группы 1
+     * @param second - спрайт 2 из группы 2
+     */
+    public void collidedObjectToSprite(Sprite first, Sprite second) {
+        if (first == game.playerSprite() && GameMath.absorbe(first, second)) {
+            // Определить индекс 2-го спрайта
+            int index = game.spriteInSpriteGroup(second);
+
+            if (index > -1) {
+                int collectedAgar = game.playerSprite().agarCollected() + game.botSprite(index).agarCollected();
+                game.playerSprite().setCollectedAgar(collectedAgar);
+                game.playerSprite().setSize(GameMath.degreeOfTwo(collectedAgar) == -1 ? 0 : GameMath.degreeOfTwo(collectedAgar));
+                game.botsSpriteList().remove(index);
+                spriteGroup.remove(second);
+            }
+        }
+        
+        if (second == game.playerSprite() && GameMath.absorbe(first, second)) {
+            // Определить индекс 1-го спрайта
+            int index = game.spriteInSpriteGroup(first);
+            
+            if (index > -1) {
+                int collectedAgar = game.playerSprite().agarCollected() + game.botSprite(index).agarCollected();
+                game.botSprite(index).setCollectedAgar(collectedAgar);
+                game.botSprite(index).setSize(GameMath.degreeOfTwo(collectedAgar) == -1 ? 0 : GameMath.degreeOfTwo(collectedAgar));
+                spriteGroup.remove(second);
+            }
+        }
+    }
+    
+
     
     /**
      * Модуль обнаружения коллизий объект - препятствие
@@ -168,7 +210,33 @@ public class CollisionManager {
         @Override
         public void collided(Sprite first, Sprite second) {
             CollisionManager.this.collidedObjectToAgar(first, second);
+        }  
+    }
+    
+    /**
+     * Модуль обнаружения коллизий объект - спрайт
+     */
+    private class ObjectToSpriteCollisionGroup extends BasicCollisionGroup {
+        /**
+         * Конструктор
+         * 
+         * @param group1 - 1 группа спрайтов
+         * @param group2 - 2 группа спрайтов
+         */
+        public ObjectToSpriteCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
+            setCollisionGroup(group1, group2);
+            pixelPerfectCollision = true;
         }
-        
+
+        /**
+         * Определяет, когда спрайт 1 из группы 1 вступил в коллизию с со спрайтом 2 из группы 2
+         * 
+         * @param first - спрайт 1 из группы 1
+         * @param second - спрайт 2 из группы 2
+         */
+        @Override
+        public void collided(Sprite first, Sprite second) {
+            CollisionManager.this.collidedObjectToSprite(first, second);
+        }  
     }
 }

@@ -141,6 +141,15 @@ public class Game extends com.golden.gamedev.Game {
     }
     
     /**
+     * Возвращает список ботов
+     * 
+     * @return список ботов (List<Sprite>)
+     */
+    public List<Sprite> botsSpriteList() {
+        return botsSpriteList;
+    }
+    
+    /**
      * Менеджер коллизий
      */
     private CollisionManager manager; 
@@ -285,11 +294,11 @@ public class Game extends com.golden.gamedev.Game {
         f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
         
         // Вывод на экран числа съеденных агар врагами
-        if (botsCount > 0) {
+        if (botsSpriteList.size() > 0) {
             f.drawString(g, "У врагов:", 0, 50);
         }
         
-        for(int i = 0; i < botsCount; i++) {
+        for(int i = 0; i < botsSpriteList.size(); i++) {
             String text = "Враг " + String.valueOf(i) + ": " + String.valueOf(botsSpriteList.get(i).agarCollected());
             f.drawString(g, text, 0, i * 50 + 100);
         }
@@ -375,6 +384,29 @@ public class Game extends com.golden.gamedev.Game {
             SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
         }
+    }
+    
+    /**
+     * Возвращает индекс спрайта из спрайтовой группы
+     * 
+     * @param searchSprite - искаемый спрайт
+     * @return индекс найденного спрайта, либо -1 в случае неудачи (int)
+     */
+    public int spriteInSpriteGroup(com.golden.gamedev.object.Sprite searchSprite) {
+        // Получить спрайты спрайтовой группы
+        com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+            
+        // Определить индекс спрайта
+        boolean isFound = false;
+        int index = -1;
+        for (com.golden.gamedev.object.Sprite sprite : sprites) {
+            if (!isFound && sprite != null && sprite != playerSprite) {
+                index++;
+                isFound = isFound || sprite == searchSprite;
+            }
+        }
+        
+        return index;
     }
     
     /**

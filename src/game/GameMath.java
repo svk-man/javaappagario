@@ -119,4 +119,49 @@ public class GameMath {
         
         return radiusSum >= distance;
     }
+    
+    /**
+     * Определяет, поглотил ли первый спрайт второй
+     * @param sprite1 - спрайт 1
+     * @param sprite2 - спрайт 2
+     * @return результат проверки (boolean)
+     */
+    public static boolean absorbe(
+        com.golden.gamedev.object.Sprite sprite1,
+        com.golden.gamedev.object.Sprite sprite2
+    ){
+        // Определяем центры спрайтов
+        Point center1 = GameMath.getCenter(sprite1);
+        Point center2 = GameMath.getCenter(sprite2);
+        
+        // Определяем расстояние между двумя центрами
+        double distance = GameMath.distance(center1, center2);
+        
+        // Определяем радиусы этих спрайтов
+        double radius1 = sprite1.getWidth()/2.0;
+        double radius2 = sprite2.getWidth()/2.0;
+        
+        return radius1 > radius2 && distance <= radius1/2.0 + radius2/2.0;
+    }
+    
+    /**
+     * Возвращает степень, в которую возведена двойка
+     * 
+     * @param num - результат возведения
+     * @return степень (int)
+     */
+    public static int degreeOfTwo(int num) {
+        if (num == 0) return -1;
+
+        int pow = 0;
+        
+        while (num > 0){
+            num >>= 1;
+            pow++;
+        }
+
+        pow--;
+
+        return pow;
+    }
 }

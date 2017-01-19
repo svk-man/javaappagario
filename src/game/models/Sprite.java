@@ -42,9 +42,16 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
     }
     
     /**
+     * Увеличивает число съеденных агар на единицу
+     */
+    public void setCollectedAgar(int agarCollected) {
+        this.agarCollected = agarCollected;
+    }
+    
+    /**
      * Размер спрайта
      */
-    private int size = 1;
+    private int size = 0;
     
     /**
      * Возвращает размер спрайта
@@ -60,6 +67,13 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
      */
     public void incrementSize() {
         size++;
+    }
+    
+    /**
+     * Устанавливает размер спрайта
+     */
+    public void setSize(int size) {
+        this.size = size;
     }
     
     /**
