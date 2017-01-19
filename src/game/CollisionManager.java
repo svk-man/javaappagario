@@ -77,6 +77,7 @@ public class CollisionManager {
      */
     public void collidedObjectToAgar(Sprite first, Sprite second) {
         if (first == game.playerSprite()) {
+            game.incrementCollectedAgar();
             agarGroup.remove(second);
         }
     }

@@ -1,5 +1,7 @@
 package game;
 
+import com.golden.gamedev.object.GameFont;
+import com.golden.gamedev.object.GameFontManager;
 import game.models.Sprite;
 import com.golden.gamedev.object.SpriteGroup;
 import com.golden.gamedev.object.background.ImageBackground;
@@ -8,6 +10,7 @@ import game.controllers.BasicSpriteController;
 import game.controllers.PlayerSpriteController;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -121,6 +124,11 @@ public class Game extends com.golden.gamedev.Game {
      * Число агара, появляемое за раз
      */
     private final int agarRespawnQuantity = 25;
+    
+    /**
+     * Число съеденного агара игроком
+     */
+    private int agarCollected = 0;
     
     /**
      * Менеджер коллизий
@@ -257,6 +265,12 @@ public class Game extends com.golden.gamedev.Game {
         {
             bg.setToCenter(playerSprite);
         }
+        
+        // Вывод на экран числа съеденного агара игроком
+        GameFontManager gfm = new GameFontManager();
+        Font font = new Font("Dialog", Font.PLAIN, 27);
+        GameFont f = gfm.getFont(font);
+        f.drawString(g, "Число съеденного агара: " + String.valueOf(agarCollected), 0, 0);
     }
     
     /**
@@ -339,6 +353,13 @@ public class Game extends com.golden.gamedev.Game {
             SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
         }
+    }
+    
+    /**
+     * Увеличивает число съеденного агара игроком
+     */
+    public void incrementCollectedAgar() {
+        agarCollected += 1;
     }
     
     /**
