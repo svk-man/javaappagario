@@ -64,7 +64,7 @@ public class Game extends com.golden.gamedev.Game {
     /**
      * Группа спрайтов, участвующих в коллизиях
      */
-    private final SpriteGroup spriteGroup = new SpriteGroup("Objects");
+    private SpriteGroup spriteGroup = new SpriteGroup("Objects");
     
     /**
      * Группа препятствий, участвующих в коллизиях
@@ -94,6 +94,11 @@ public class Game extends com.golden.gamedev.Game {
      * Список контроллеров
      */
     private final List<BasicSpriteController> controllers = new ArrayList<>();
+    
+    /**
+     * Представление бота
+     */
+    BufferedImage botImage = null;
     
     /**
      * Число ботов
@@ -162,7 +167,7 @@ public class Game extends com.golden.gamedev.Game {
         try {
             // Загрузка изображений игровых сущностей
             BufferedImage playerImage = ImageIO.read(new File("resources/PRIMITIVE_PLANT.png"));
-            BufferedImage botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
+            botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
             BufferedImage obstacleImage = ImageIO.read(new File("resources/OBSTACLE.png"));
             agarImage = game.views.AgarView.image();
             
@@ -177,25 +182,7 @@ public class Game extends com.golden.gamedev.Game {
             playerSprite.setPosition(new Point(320, 240));
 
             // Создание спрайтов ботов
-            Random r = new Random();
-            for(int i = 0; i < 3; i++)
-            {
-                // Создание спрайта бота
-                Sprite botSprite = new Sprite();
-                // Установка параметров
-                botSprite.setSpeed(0.1);
-                // Установка представления
-                botSprite.getSpriteView().setColor(Color.BLUE);
-                botSprite.getSpriteView().setIcon(botImage);
-                // Установка позиции
-                botSprite.setPosition(new Point(160 + r.nextInt(320), 120 + r.nextInt(240)));
-                // Добавление спрайта бота в группу спрайтов, участвующих в коллизиях
-                spriteGroup.add(botSprite);
-                // Добавление контроллера ИИ спрайту бота
-                controllers.add(new AISpriteController(this, botSprite, playerSprite));
-                // Добавление бота в список ботов
-                botsSpriteList.add(botSprite);
-            }
+            trySpawnBot();
             
             // Генерация игрового фона
             BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
@@ -267,6 +254,9 @@ public class Game extends com.golden.gamedev.Game {
         
         // Проверить коллизии
         manager.checkCollision();
+        
+        // Попытаться добавить бота
+        this.trySpawnBot();
     }
 
     /**
@@ -383,6 +373,47 @@ public class Game extends com.golden.gamedev.Game {
         if (agarGroup.getSize() < this.agarRequiredQuantity) {
             SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
+        }
+    }
+    
+    /**
+     * Добавление бота, если это возможно
+     */
+    private void trySpawnBot() {
+        if (botsSpriteList.size() < botsCount) {
+            SpriteGroup[] groupsForBots = { spriteGroup, obstacleGroup };
+            this.generateSpritesAroundPlayer(botImage, playerSprite, 3000, botsCount - botsSpriteList.size(), spriteGroup, groupsForBots);
+            
+            // Получить спрайты спрайтовой группы
+            com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+            
+            // Сформировать временную прайтовую группу
+            SpriteGroup newSpriteGroup = spriteGroup;
+            newSpriteGroup.clear();
+            
+            for (com.golden.gamedev.object.Sprite sprite : sprites) {
+                if (sprite != null && sprite != playerSprite && !botsSpriteList.contains(sprite)) {
+                    // Создание спрайта бота
+                    Sprite botSprite = new Sprite();
+                    // Установка параметров
+                    botSprite.setSpeed(0.1);
+                    // Установка представления
+                    botSprite.getSpriteView().setColor(Color.BLUE);
+                    botSprite.getSpriteView().setIcon(botImage);
+                    // Установка позиции
+                    botSprite.setPosition(new Point((int)sprite.getX(), (int)sprite.getY()));
+                    // Добавление спрайта бота в группу спрайтов, участвующих в коллизиях
+                    newSpriteGroup.add(botSprite);
+                    // Добавление контроллера ИИ спрайту бота
+                    controllers.add(new AISpriteController(this, botSprite, playerSprite));
+                    // Добавление бота в список ботов
+                    botsSpriteList.add(botSprite);
+                } else if (sprite != null){
+                    newSpriteGroup.add(sprite);
+                }
+            }
+            
+            spriteGroup = newSpriteGroup;
         }
     }
     
