@@ -44,7 +44,7 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
     /**
      * Размер спрайта
      */
-    private int size = 1;
+    private int size = 0;
     
     /**
      * Возвращает размер спрайта
