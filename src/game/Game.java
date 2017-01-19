@@ -159,8 +159,22 @@ public class Game extends com.golden.gamedev.Game {
                 controllers.add(new AISpriteController(this, botSprite, playerSprite));
             }
             
-            // Загрузка изображения для игрового фона
-            bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")));
+            // Генерация игрового фона
+            BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
+            BufferedImage bi = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = bi.createGraphics();
+            int tileWidth = tile.getWidth();
+            int tileHeight = tile.getHeight();
+            
+            for (int y = 0; y < 1000; y += tileHeight) {
+                for (int x = 0; x < 1000; x += tileWidth) {
+                    g2d.drawImage(tile, x, y, null);
+                }
+            }
+            
+            g2d.dispose();
+            bg = new ImageBackground(bi);
+
             // Установка размеров viewport
             bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
 
