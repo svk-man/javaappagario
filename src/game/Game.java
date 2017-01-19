@@ -27,6 +27,15 @@ import javax.imageio.ImageIO;
  */
 public class Game extends com.golden.gamedev.Game {
     /**
+     * Полная ширина поля
+     */
+    public static int totalWidth = 3000;
+    /**
+     * Полная высота поля
+     */
+    public static int totalHeight = 1500;
+    
+    /**
      * Игровой фон
      */
     private ImageBackground bg;
@@ -36,18 +45,18 @@ public class Game extends com.golden.gamedev.Game {
      * 
      * @return ширина (int)
      */
-    public int getBgWidth() {
-        return bg.getWidth();
-    }
+    //public int getBgWidth() {
+    //    return bg.getWidth();
+    //}
     
     /**
      * Получить высоту игрового фона, т.е. полную высоту игры
      * 
      * @return высота (int)
      */
-    public int getBgHeight() {
-        return bg.getHeight();
-    }
+    //public int getBgHeight() {
+    //    return bg.getHeight();
+    //}
     
     /**
      * Группа спрайтов, участвующих в коллизиях
@@ -161,13 +170,13 @@ public class Game extends com.golden.gamedev.Game {
             
             // Генерация игрового фона
             BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
-            BufferedImage bi = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage bi = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
             int tileWidth = tile.getWidth();
             int tileHeight = tile.getHeight();
             
-            for (int y = 0; y < 1000; y += tileHeight) {
-                for (int x = 0; x < 1000; x += tileWidth) {
+            for (int y = 0; y < totalHeight; y += tileHeight) {
+                for (int x = 0; x < totalWidth; x += tileWidth) {
                     g2d.drawImage(tile, x, y, null);
                 }
             }
@@ -189,7 +198,8 @@ public class Game extends com.golden.gamedev.Game {
             
             // Сгенерировать препятствия вокруг игрока
             SpriteGroup[] groupsForObstacle = { spriteGroup };
-            this.generateSpritesAroundPlayer(obstacleImage, playerSprite, this.getBgWidth(), 15, obstacleGroup, groupsForObstacle);
+            int size = totalWidth > totalHeight ? totalWidth : totalHeight;
+            this.generateSpritesAroundPlayer(obstacleImage, playerSprite, size, 15, obstacleGroup, groupsForObstacle);
             
             // Прикрепить группу препятствий к игровому фону
             obstacleGroup.setBackground(bg);
@@ -289,7 +299,7 @@ public class Game extends com.golden.gamedev.Game {
             int x = r1.nextInt(radius);
             int y = r2.nextInt(radius);
             
-            if (x >= 0 && x <= this.getBgWidth() && y >= 0 && y <= this.getBgHeight()) {
+            if (x >= 0 && x <= Game.totalWidth && y >= 0 && y <= Game.totalHeight) {
                 com.golden.gamedev.object.Sprite generatedSprite = new com.golden.gamedev.object.Sprite(spriteImage, x, y);
                 
                 // Определить, пересекается ли сгенерированный спрайт хотя бы
