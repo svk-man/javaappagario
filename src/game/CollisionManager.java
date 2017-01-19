@@ -31,6 +31,11 @@ public class CollisionManager {
     private final Game game;
     
     /**
+     * Группа агар
+     */
+    private final SpriteGroup agarGroup;
+    
+    /**
      * Конструктор
      * 
      * @param game - игра
@@ -40,6 +45,7 @@ public class CollisionManager {
      */
     public CollisionManager(Game game, SpriteGroup spriteGroup, SpriteGroup obstacleGroup, SpriteGroup agarGroup) {
         this.game = game;
+        this.agarGroup = agarGroup;
         o2o = new ObjectToObstacleCollisionGroup(spriteGroup, obstacleGroup);
         o2a = new ObjectToAgarCollisionGroup(spriteGroup, agarGroup);
     }
@@ -61,6 +67,18 @@ public class CollisionManager {
     public void collidedObjectToObstacle(Sprite first, Sprite second) {
         first.setX(first.getOldX());
         first.setY(first.getOldY());        
+    }
+    
+    /**
+     * Устанавливает реакцию на результат коллизии с агаром
+     * 
+     * @param first - спрайт 1 из группы 1
+     * @param second - спрайт 2 из группы 2
+     */
+    public void collidedObjectToAgar(Sprite first, Sprite second) {
+        if (first == game.playerSprite()) {
+            agarGroup.remove(second);
+        }
     }
     
     /**
@@ -114,7 +132,7 @@ public class CollisionManager {
          */
         @Override
         public void collided(Sprite first, Sprite second) {
-            
+            CollisionManager.this.collidedObjectToAgar(first, second);
         }
         
     }

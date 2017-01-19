@@ -70,6 +70,15 @@ public class Game extends com.golden.gamedev.Game {
     private Sprite playerSprite;
     
     /**
+     * Возвращает спрайт игрока
+     * 
+     * @return спрайт игрока (Sprite)
+     */
+    public Sprite playerSprite() {
+        return playerSprite;
+    }
+    
+    /**
      * Список контроллеров
      */
     private final List<BasicSpriteController> controllers = new ArrayList<>();
