@@ -58,6 +58,11 @@ public class Game extends com.golden.gamedev.Game {
      * Группа препятствий, участвующих в коллизиях
      */
     private final SpriteGroup obstacleGroup = new SpriteGroup("Obstacles");
+    
+    /**
+     * Группа агар, участвующих в коллизиях
+     */
+    private final SpriteGroup agarGroup = new SpriteGroup("Agars");
        
     /**
      * Спрайт игрока
@@ -75,15 +80,41 @@ public class Game extends com.golden.gamedev.Game {
     private int botsCount = 3;
     
     /**
+     * Представление агара
+     */
+    BufferedImage agarImage = null;
+    
+    /**
+     * Лимит по количеству агара на поле
+     */
+    private final int agarRequiredQuantity = 400;
+    
+    /**
+     * Время, спустя которое появляется агар
+     */
+    private final int agarRespawnPeriod = 2000;
+    
+    /**
+     * Время последнего появления
+     */
+    private long lastRespawnTime = 0;
+    
+    /**
+     * Число агара, появляемое за раз
+     */
+    private final int agarRespawnQuantity = 25;
+    
+    /**
      * Инициализация игровых переменных
      */
     @Override
     public void initResources() { 
         try {
-            // Загрузка изображений игрока и ботов
+            // Загрузка изображений игровых сущностей
             BufferedImage playerImage = ImageIO.read(new File("resources/PRIMITIVE_PLANT.png"));
             BufferedImage botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
             BufferedImage obstacleImage = ImageIO.read(new File("resources/OBSTACLE.png"));
+            agarImage = game.views.AgarView.image();
             
             // Создание спрайта игрока
             playerSprite = new Sprite();
@@ -134,6 +165,9 @@ public class Game extends com.golden.gamedev.Game {
             
             // Прикрепить группу препятствий к игровому фону
             obstacleGroup.setBackground(bg);
+            
+            // Прикрепить группу агар к игровому фону
+            agarGroup.setBackground(bg);
         } catch (IOException ex) {
             Logger.getLogger("main").log(Level.SEVERE, null, ex);
         }
@@ -154,6 +188,11 @@ public class Game extends com.golden.gamedev.Game {
         // Обновить спрайтовую группу
         spriteGroup.update(elapsedTime);
         
+        long curTime = System.nanoTime();
+        if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
+            this.trySpawnAgar();
+        }
+        
         // Обновить игровой фон
         bg.update(elapsedTime);
     }
@@ -168,6 +207,7 @@ public class Game extends com.golden.gamedev.Game {
         bg.render(g);                   // Рендеринг игрового фона         
         spriteGroup.render(g);          // Рендеринг спрайтовой группы
         obstacleGroup.render(g);        // Рендеринг группы препятствий
+        agarGroup.render(g);            // Рендеринг группы агар
         
         // Установка спрайта в центр игрвого фона
         if (playerSprite != null)
@@ -244,6 +284,17 @@ public class Game extends com.golden.gamedev.Game {
                 }
             }
             
+        }
+    }
+    
+    /**
+     * Добавление агар, если это возможно
+     */
+    private void trySpawnAgar() {
+        lastRespawnTime = System.nanoTime();
+        if (agarGroup.getSize() < this.agarRequiredQuantity) {
+            SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
+            this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
         }
     }
     
