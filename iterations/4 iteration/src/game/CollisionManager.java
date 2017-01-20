@@ -130,6 +130,7 @@ public class CollisionManager {
                 game.playerSprite().setSize(GameMath.degreeOfTwo(collectedAgar) == -1 ? 0 : GameMath.degreeOfTwo(collectedAgar));
                 game.botsSpriteList().remove(index);
                 spriteGroup.remove(second);
+                game.controllers().remove(index);
             }
         }
         
