@@ -141,7 +141,7 @@ public class CollisionManager {
                 int collectedAgar = game.playerSprite().agarCollected() + game.botSprite(index).agarCollected();
                 game.botSprite(index).setCollectedAgar(collectedAgar);
                 game.botSprite(index).setSize(GameMath.degreeOfTwo(collectedAgar) == -1 ? 0 : GameMath.degreeOfTwo(collectedAgar));
-                spriteGroup.remove(second);
+                game.initiateGameOver();
             }
         }
     }

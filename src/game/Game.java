@@ -1,5 +1,6 @@
 package game;
 
+import com.golden.gamedev.engine.BaseInput;
 import com.golden.gamedev.object.GameFont;
 import com.golden.gamedev.object.GameFontManager;
 import game.models.Sprite;
@@ -13,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,16 @@ import javax.imageio.ImageIO;
  * @author mypc
  */
 public class Game extends com.golden.gamedev.Game {
+    /**
+     * Запущена игра или нет
+     */
+    boolean isRunning = false;
+    
+    /**
+     * Объявление конца игры
+     */
+    boolean isGameOver = false;
+    
     /**
      * Полная ширина поля
      */
@@ -165,65 +177,67 @@ public class Game extends com.golden.gamedev.Game {
     @Override
     public void initResources() { 
         try {
-            // Загрузка изображений игровых сущностей
-            BufferedImage playerImage = ImageIO.read(new File("resources/PRIMITIVE_PLANT.png"));
-            botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
-            BufferedImage obstacleImage = ImageIO.read(new File("resources/OBSTACLE.png"));
-            agarImage = game.views.AgarView.image();
+            if (isRunning) {
+                // Загрузка изображений игровых сущностей
+                BufferedImage playerImage = ImageIO.read(new File("resources/PRIMITIVE_PLANT.png"));
+                botImage = ImageIO.read(new File("resources/PRIMITIVE_ANIMAL.png"));
+                BufferedImage obstacleImage = ImageIO.read(new File("resources/OBSTACLE.png"));
+                agarImage = game.views.AgarView.image();
             
-            // Создание спрайта игрока
-            playerSprite = new Sprite();
-            // Настройка параметров
-            playerSprite.setSpeed(0.1);
-            // Установка представления
-            playerSprite.getSpriteView().setColor(Color.GREEN);
-            playerSprite.getSpriteView().setIcon(playerImage);
-            // Установка позиции
-            playerSprite.setPosition(new Point(320, 240));
+                // Создание спрайта игрока
+                playerSprite = new Sprite();
+                // Настройка параметров
+                playerSprite.setSpeed(0.1);
+                // Установка представления
+                playerSprite.getSpriteView().setColor(Color.GREEN);
+                playerSprite.getSpriteView().setIcon(playerImage);
+                // Установка позиции
+                playerSprite.setPosition(new Point(320, 240));
 
-            // Создание спрайтов ботов
-            trySpawnBot();
+                // Создание спрайтов ботов
+                trySpawnBot();
             
-            // Генерация игрового фона
-            BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
-            BufferedImage bi = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = bi.createGraphics();
-            int tileWidth = tile.getWidth();
-            int tileHeight = tile.getHeight();
+                // Генерация игрового фона
+                BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
+                BufferedImage bi = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = bi.createGraphics();
+                int tileWidth = tile.getWidth();
+                int tileHeight = tile.getHeight();
             
-            for (int y = 0; y < totalHeight; y += tileHeight) {
-                for (int x = 0; x < totalWidth; x += tileWidth) {
-                    g2d.drawImage(tile, x, y, null);
+                for (int y = 0; y < totalHeight; y += tileHeight) {
+                    for (int x = 0; x < totalWidth; x += tileWidth) {
+                        g2d.drawImage(tile, x, y, null);
+                    }
                 }
+            
+                g2d.dispose();
+                bg = new ImageBackground(bi);
+
+                // Установка размеров viewport
+                bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
+
+                // Прикрепить спрайтовую группу к игровому фону
+                spriteGroup.setBackground(bg);
+            
+                // Добавить спрайт игрока в спрайтовую группу
+                spriteGroup.add(playerSprite);
+            
+                // Добавить контроллер игрока для спрайта игрока
+                controllers.add(new PlayerSpriteController(this, playerSprite));
+            
+                // Сгенерировать препятствия вокруг игрока
+                SpriteGroup[] groupsForObstacle = { spriteGroup };
+                int size = totalWidth > totalHeight ? totalWidth : totalHeight;
+                this.generateSpritesAroundPlayer(obstacleImage, playerSprite, size, 15, obstacleGroup, groupsForObstacle);
+            
+                // Прикрепить группу препятствий к игровому фону
+                obstacleGroup.setBackground(bg);
+            
+                // Прикрепить группу агар к игровому фону
+                agarGroup.setBackground(bg);
+            
+                manager = new CollisionManager(this, spriteGroup, obstacleGroup, agarGroup);
             }
-            
-            g2d.dispose();
-            bg = new ImageBackground(bi);
-
-            // Установка размеров viewport
-            bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
-
-            // Прикрепить спрайтовую группу к игровому фону
-            spriteGroup.setBackground(bg);
-            
-            // Добавить спрайт игрока в спрайтовую группу
-            spriteGroup.add(playerSprite);
-            
-            // Добавить контроллер игрока для спрайта игрока
-            controllers.add(new PlayerSpriteController(this, playerSprite));
-            
-            // Сгенерировать препятствия вокруг игрока
-            SpriteGroup[] groupsForObstacle = { spriteGroup };
-            int size = totalWidth > totalHeight ? totalWidth : totalHeight;
-            this.generateSpritesAroundPlayer(obstacleImage, playerSprite, size, 15, obstacleGroup, groupsForObstacle);
-            
-            // Прикрепить группу препятствий к игровому фону
-            obstacleGroup.setBackground(bg);
-            
-            // Прикрепить группу агар к игровому фону
-            agarGroup.setBackground(bg);
-            
-            manager = new CollisionManager(this, spriteGroup, obstacleGroup, agarGroup);
         } catch (IOException ex) {
             Logger.getLogger("main").log(Level.SEVERE, null, ex);
         }
@@ -236,27 +250,39 @@ public class Game extends com.golden.gamedev.Game {
      */
     @Override
     public void update(long elapsedTime) {
-        // Обновить все контроллеры
-        for(int i = 0; i < controllers.size(); i++) {
-            controllers.get(i).update(elapsedTime);
+        if (isRunning) {
+            // Обновить все контроллеры
+            for(int i = 0; i < controllers.size(); i++) {
+                controllers.get(i).update(elapsedTime);
+            }
+        
+            // Обновить спрайтовую группу
+            spriteGroup.update(elapsedTime);
+        
+            long curTime = System.nanoTime();
+            if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
+                this.trySpawnAgar();
+            }
+        
+            // Обновить игровой фон
+            bg.update(elapsedTime);
+        
+            // Проверить коллизии
+            manager.checkCollision();
+        
+            // Попытаться добавить бота
+            this.trySpawnBot();
+        } else {
+            if (isGameOver) {
+                if (keyPressed(KeyEvent.VK_SPACE)) {
+                    isGameOver = false;
+                }
+            } else {
+                if (keyPressed(KeyEvent.VK_SPACE)) {
+                    this.initiateStartGame();
+                }
+            }
         }
-        
-        // Обновить спрайтовую группу
-        spriteGroup.update(elapsedTime);
-        
-        long curTime = System.nanoTime();
-        if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
-            this.trySpawnAgar();
-        }
-        
-        // Обновить игровой фон
-        bg.update(elapsedTime);
-        
-        // Проверить коллизии
-        manager.checkCollision();
-        
-        // Попытаться добавить бота
-        this.trySpawnBot();
     }
 
     /**
@@ -266,34 +292,42 @@ public class Game extends com.golden.gamedev.Game {
      */
     @Override
     public void render(Graphics2D g) {
-        bg.render(g);                   // Рендеринг игрового фона         
-        spriteGroup.render(g);          // Рендеринг спрайтовой группы
-        obstacleGroup.render(g);        // Рендеринг группы препятствий
-        agarGroup.render(g);            // Рендеринг группы агар
+        if (isRunning) {
+            bg.render(g);                   // Рендеринг игрового фона         
+            spriteGroup.render(g);          // Рендеринг спрайтовой группы
+            obstacleGroup.render(g);        // Рендеринг группы препятствий
+            agarGroup.render(g);            // Рендеринг группы агар
         
-        // Установка спрайта в центр игрвого фона
-        if (playerSprite != null)
-        {
-            bg.setToCenter(playerSprite);
-        }
+            // Установка спрайта в центр игрвого фона
+            if (playerSprite != null)
+            {
+                bg.setToCenter(playerSprite);
+            }
         
-        // Вывод на экран числа съеденного агара игроком
-        GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Dialog", Font.PLAIN, 27);
-        GameFont f = gfm.getFont(font);
-        f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
+            // Вывод на экран числа съеденного агара игроком
+            GameFontManager gfm = new GameFontManager();
+            Font font = new Font("Dialog", Font.PLAIN, 27);
+            GameFont f = gfm.getFont(font);
+            f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
         
-        // Вывод на экран числа съеденных агар врагами
-        if (botsSpriteList.size() > 0) {
-            f.drawString(g, "У врагов:", 0, 50);
-        }
+            // Вывод на экран числа съеденных агар врагами
+            if (botsSpriteList.size() > 0) {
+                f.drawString(g, "У врагов:", 0, 50);
+            }
         
-        for(int i = 0; i < botsSpriteList.size(); i++) {
-            String text = "Враг " + String.valueOf(i) + ": " + String.valueOf(botsSpriteList.get(i).agarCollected());
-            f.drawString(g, text, 0, i * 50 + 100);
+            for(int i = 0; i < botsSpriteList.size(); i++) {
+                String text = "Враг " + String.valueOf(i) + ": " + String.valueOf(botsSpriteList.get(i).agarCollected());
+                f.drawString(g, text, 0, i * 50 + 100);
+            }
+        } else {
+            if (isGameOver) {
+                this.renderGameOverScene(g);
+            } else {
+                this.renderStartScene(g);
+            }
         }
     }
-    
+      
     /**
      * Текущая позиция координат мыши
      * 
@@ -438,6 +472,73 @@ public class Game extends com.golden.gamedev.Game {
         }
         
         return index;
+    }
+    
+    /**
+     * Рендеринг стартовой сцены
+     * 
+     * @param g - графический объект рендеринга игры
+     */
+    private void renderStartScene(Graphics2D g) {
+        g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        GameFontManager gfm = new GameFontManager();
+        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
+        GameFont f = gfm.getFont(font);
+        g.setColor(Color.BLUE);
+        f.drawString(g, "AGARIO", 200, 100);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        f = gfm.getFont(font);
+        f.drawString(g, "PLAY GAME", 165, 200);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        f = gfm.getFont(font);
+        f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 300);
+    }
+    
+    /**
+     * Рендеринг конца игры
+     * 
+     * @param g - графический объект рендеринга игры
+     */
+    private void renderGameOverScene(Graphics2D g) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        GameFontManager gfm = new GameFontManager();
+        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
+        GameFont f = gfm.getFont(font);
+        g.setColor(Color.BLUE);
+        f.drawString(g, "AGARIO", 200, 100);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        f = gfm.getFont(font);
+        f.drawString(g, "GAME OVER", 165, 200);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        f = gfm.getFont(font);
+        f.drawString(g, "ИТОГОВЫЙ СЧЕТ: " + playerSprite.agarCollected(), 90, 280);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        f = gfm.getFont(font);
+        f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 360);
+    }
+    
+    /**
+     * Инициировать старт игры
+     */
+    public void initiateStartGame() {
+        isRunning = true;
+        isGameOver = false;
+        this.initResources();
+    }
+    
+    /**
+     * Инициировать конец игры
+     */
+    public void initiateGameOver() {
+        isRunning = false;
+        isGameOver = true;
+        spriteGroup.clear();
+        agarGroup.clear();
+        obstacleGroup.clear();
+        botsSpriteList.clear();
+        controllers.clear();
     }
     
     /**
