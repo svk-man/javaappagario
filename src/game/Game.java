@@ -108,6 +108,25 @@ public class Game extends com.golden.gamedev.Game {
     private final List<BasicSpriteController> controllers = new ArrayList<>();
     
     /**
+     * Возвращает контроллер по заданному индексу
+     * 
+     * @param index - индекс
+     * @return контроллер (BasicSpriteController)
+     */
+    public BasicSpriteController controller(int index) {
+        return controllers.get(index);
+    }
+    
+    /**
+     * Возвращает список контроллеров
+     * 
+     * @return список контроллеров (List<BasicSpriteController> )
+     */
+    public List<BasicSpriteController> controllers() {
+        return controllers;
+    }
+    
+    /**
      * Представление бота
      */
     BufferedImage botImage = null;
