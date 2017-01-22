@@ -46,6 +46,11 @@ public class Game extends com.golden.gamedev.Game {
     boolean isGameOver = false;
     
     /**
+     * Показывается ли список особенностей игры или нет
+     */
+    boolean isFeatureList = true;
+    
+    /**
      * Цвет персонажа игрока
      */
     Color playerColor = Color.green;
@@ -409,7 +414,11 @@ public class Game extends com.golden.gamedev.Game {
                 }
             } else {
                 if (keyPressed(KeyEvent.VK_SPACE)) {
-                    this.initiateStartGame();
+                    if (!isFeatureList) {
+                        this.initiateStartGame();
+                    } else {
+                        isFeatureList = false;
+                    }
                 }
                 if (click()) {
                     playerColor = this.identifyColorByClickOnScene(getMouseX(), getMouseY(), 220, 220, 220, 20, playerColorList);
@@ -455,6 +464,8 @@ public class Game extends com.golden.gamedev.Game {
         } else {
             if (isGameOver) {
                 this.renderGameOverScene(g);
+            } else if(isFeatureList) {
+                this.renderFeatureScene(g);
             } else {
                 this.renderStartScene(g);
             }
@@ -766,6 +777,54 @@ public class Game extends com.golden.gamedev.Game {
         font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
         f = gfm.getFont(font);
         f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 360);
+    }
+    
+    /**
+     * Рендеринг списка особенностей игры
+     * 
+     * @param g - графический объект рендеринга игры
+     */
+    private void renderFeatureScene(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        GameFontManager gfm = new GameFontManager();
+        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        GameFont f = gfm.getFont(font);
+        g.setColor(Color.BLUE);
+        f.drawString(g, "Особенности игры \"AGARIO\"", 150, 0);
+
+        g.setColor(Color.BLACK);
+        g.setStroke(new BasicStroke(2));
+        g.drawRect(10, 35, this.dimensions().width - 10, 355);
+        
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 14);
+        f = gfm.getFont(font);
+        f.drawString(g, "1 итерация: по конечному полю двигается бактерия в направлении мыши с", 15, 35);
+        f.drawString(g, "константной скоростью и находится в центре экрана.", 15, 50);
+        f.drawString(g, "2 итерация:", 15, 65);
+        f.drawString(g, "- Размер поля - произвольный.", 15, 80);
+        f.drawString(g, "- Реализация препятствий и их случайной расстановки на поле.", 15, 95);
+        f.drawString(g, "- Реализация объекта агара и его случайного появления на поле. У агара есть", 15, 110);
+        f.drawString(g, "лимит по количеству объектов на поле. Агар появляется спустя определенный", 15, 125);
+        f.drawString(g, "промежуток времени и появляется на части поля, но не под игроком.", 15, 140);
+        f.drawString(g, "- Реализация поглощения агара игроком.", 15, 155);
+        f.drawString(g, "3 итерация:", 15, 170);
+        f.drawString(g, "- Реализация изменения размера игрока и врагов в нелинейной зависимости", 15, 185);
+        f.drawString(g, "от числа съеденного агара.", 15, 200);
+        f.drawString(g, "- Реализация счетчика агара и его отображения.", 15, 215);
+        f.drawString(g, "4 итерация:", 15, 230);
+        f.drawString(g, "- Реализация появления новых врагов по мере исчезания старых.", 15, 245);
+        f.drawString(g, "- Реализация поглощения врагов.", 15, 260);
+        f.drawString(g, "- Реализация экрана поражения в игре и возможности начать новую игру (по", 15, 275);
+        f.drawString(g, "нажатию на клавишу клавиатуры).", 15, 290);
+        f.drawString(g, "5 итерация: еда может двигаться.", 15, 305);
+        f.drawString(g, "6 итерация:", 15, 320);
+        f.drawString(g, "- Выбор цвета игрока перед началом игры из списка заданных цветов.", 15, 335);
+        f.drawString(g, "- Вывод списка возможностей игры и выбранных модификаций при запуске игры.", 15, 350);
+        f.drawString(g, "- Установлен предельный размер клетки, больше которого нельзя набрать.", 15, 365);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        f = gfm.getFont(font);
+        f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
     }
     
     /**
