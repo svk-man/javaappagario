@@ -31,6 +31,11 @@ public class CollisionManager {
     private final ObjectToSpriteCollisionGroup o2s;
     
     /**
+     * Модуль обнаружения коллизий агар - препятствие
+     */
+    private final AgarToObstacleCollisionGroup a2o;
+    
+    /**
      * Игра
      */
     private final Game game;
@@ -58,6 +63,7 @@ public class CollisionManager {
         this.spriteGroup = spriteGroup;
         this.agarGroup = agarGroup;
         o2o = new ObjectToObstacleCollisionGroup(spriteGroup, obstacleGroup);
+        a2o = new AgarToObstacleCollisionGroup(agarGroup, obstacleGroup);
         o2a = new ObjectToAgarCollisionGroup(spriteGroup, agarGroup);
         o2s = new ObjectToSpriteCollisionGroup(spriteGroup, spriteGroup);
     }
@@ -69,6 +75,7 @@ public class CollisionManager {
         o2o.checkCollision();
         o2a.checkCollision();
         o2s.checkCollision();
+        a2o.checkCollision();
     }
     
     /**
@@ -78,6 +85,17 @@ public class CollisionManager {
      * @param second - спрайт 2 из группы 2
      */
     public void collidedObjectToObstacle(Sprite first, Sprite second) {
+        first.setX(first.getOldX());
+        first.setY(first.getOldY());        
+    }
+    
+    /**
+     * Устанавливает реакцию на результат коллизии агара с препятствием
+     * 
+     * @param first - спрайт 1 из группы 1
+     * @param second - спрайт 2 из группы 2
+     */
+    public void collidedAgarToObstacle(Sprite first, Sprite second) {
         first.setX(first.getOldX());
         first.setY(first.getOldY());        
     }
@@ -228,6 +246,33 @@ public class CollisionManager {
         @Override
         public void collided(Sprite first, Sprite second) {
             CollisionManager.this.collidedObjectToSprite(first, second);
+        }  
+    }
+    
+    /**
+     * Модуль обнаружения коллизий агар - препятствие
+     */
+    private class AgarToObstacleCollisionGroup extends BasicCollisionGroup {
+        /**
+         * Конструктор
+         * 
+         * @param group1 - 1 группа спрайтов
+         * @param group2 - 2 группа спрайтов
+         */
+        public AgarToObstacleCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
+            setCollisionGroup(group1, group2);
+            pixelPerfectCollision = true;
+        }
+
+        /**
+         * Определяет, когда спрайт 1 из группы 1 вступил в коллизию с со спрайтом 2 из группы 2
+         * 
+         * @param first - спрайт 1 из группы 1
+         * @param second - спрайт 2 из группы 2
+         */
+        @Override
+        public void collided(Sprite first, Sprite second) {
+            CollisionManager.this.collidedAgarToObstacle(first, second);
         }  
     }
 }

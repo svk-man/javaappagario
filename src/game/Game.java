@@ -6,9 +6,11 @@ import com.golden.gamedev.object.GameFontManager;
 import game.models.Sprite;
 import com.golden.gamedev.object.SpriteGroup;
 import com.golden.gamedev.object.background.ImageBackground;
+import game.controllers.AIAgarController;
 import game.controllers.AISpriteController;
 import game.controllers.BasicSpriteController;
 import game.controllers.PlayerSpriteController;
+import game.models.Agar;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -86,7 +88,7 @@ public class Game extends com.golden.gamedev.Game {
     /**
      * Группа агар, участвующих в коллизиях
      */
-    private final SpriteGroup agarGroup = new SpriteGroup("Agars");
+    private SpriteGroup agarGroup = new SpriteGroup("Agars");
        
     /**
      * Спрайт игрока
@@ -127,6 +129,30 @@ public class Game extends com.golden.gamedev.Game {
     }
     
     /**
+     * Список контроллеров агара
+     */
+    private final List<AIAgarController> agarControllers = new ArrayList<>();
+    
+    /**
+     * Возвращает контроллер агара по заданному индексу
+     * 
+     * @param index - индекс
+     * @return контроллер агара (AIAgarController)
+     */
+    public AIAgarController agarController(int index) {
+        return agarControllers.get(index);
+    }
+    
+    /**
+     * Возвращает список контроллеров агара
+     * 
+     * @return список контроллеров агара (List<AIAgarController> )
+     */
+    public List<AIAgarController> agarControllers() {
+        return agarControllers;
+    }
+    
+    /**
      * Представление бота
      */
     BufferedImage botImage = null;
@@ -160,6 +186,40 @@ public class Game extends com.golden.gamedev.Game {
      * Число агара, появляемое за раз
      */
     private final int agarRespawnQuantity = 25;
+    
+    /**
+     * Время последнего изменения направления движения агара
+     */
+    private long agarLastChangedDirectionTime = 0;
+    
+    /**
+     * Время, спустя которое должно измениться направление движения агара
+     */
+    private int agarChagedDirectionPeriod = 2000;
+    
+    /**
+     * Список агар
+     */
+    private final List<Agar> agarsList = new ArrayList<>();
+    
+    /**
+     * Возвращает агар по заданному индексу
+     * 
+     * @param index - индекс
+     * @return агар (Agar)
+     */
+    public Agar agar(int index) {
+        return agarsList.get(index);
+    }
+    
+    /**
+     * Возвращает список агар
+     * 
+     * @return список агар (List<Agar>)
+     */
+    public List<Agar> agarsList() {
+        return agarsList;
+    }
     
     /**
      * Список ботов
@@ -215,6 +275,9 @@ public class Game extends com.golden.gamedev.Game {
 
                 // Создание спрайтов ботов
                 trySpawnBot();
+                
+                // Создание агар
+                trySpawnAgar();
             
                 // Генерация игрового фона
                 BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
@@ -274,13 +337,28 @@ public class Game extends com.golden.gamedev.Game {
             for(int i = 0; i < controllers.size(); i++) {
                 controllers.get(i).update(elapsedTime);
             }
+            
+            // Обновить контроллеры агар
+            for(int i = 0; i < agarControllers.size(); i++) {
+                agarControllers.get(i).update(elapsedTime);
+            }
+            
+            // Обновить группу агар
+            agarGroup.update(elapsedTime);
         
             // Обновить спрайтовую группу
             spriteGroup.update(elapsedTime);
-        
+            
+            // Сменить направление движения у всех агар
             long curTime = System.nanoTime();
-            if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
-                this.trySpawnAgar();
+            Random r1 = new Random();
+            Random r2 = new Random();
+            if ((curTime - agarLastChangedDirectionTime) / 1.0E+6 >= agarChagedDirectionPeriod) {
+                agarLastChangedDirectionTime = System.nanoTime();
+                for(int i = 0; i < agarsList.size(); i++) {
+                    int angle = GameMath.angle(agarsList.get(i).getPosition(), new Point(r1.nextInt(totalWidth), r2.nextInt(totalHeight)));
+                    agarsList.get(i).setDirection(angle);
+               }
             }
         
             // Обновить игровой фон
@@ -291,6 +369,12 @@ public class Game extends com.golden.gamedev.Game {
         
             // Попытаться добавить бота
             this.trySpawnBot();
+            
+            // Попытаться добавить агар
+            curTime = System.nanoTime();
+            if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
+                this.trySpawnAgar();
+            }
         } else {
             if (isGameOver) {
                 if (keyPressed(KeyEvent.VK_SPACE)) {
@@ -426,6 +510,34 @@ public class Game extends com.golden.gamedev.Game {
         if (agarGroup.getSize() < this.agarRequiredQuantity) {
             SpriteGroup[] groupsForAgar = { spriteGroup, obstacleGroup };
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
+        
+            // Получить спрайты группы агар
+            com.golden.gamedev.object.Sprite[] sprites = agarGroup.getSprites();
+            
+            // Сформировать временную группу агар
+            SpriteGroup newAgarGroup = agarGroup;
+            newAgarGroup.clear();
+            
+            for (com.golden.gamedev.object.Sprite sprite : sprites) {
+                if (sprite != null) {
+                    // Создание агара
+                    Agar agar = new Agar();
+                    // Установка параметров
+                    agar.setSpeed(0.1);
+                    // Установка представления
+                    agar.setImage(agarImage);
+                    // Установка позиции
+                    agar.setPosition(new Point((int)sprite.getX(), (int)sprite.getY()));
+                    // Добавление агара в группу агар, участвующих в коллизиях
+                    newAgarGroup.add(agar);
+                    // Добавление контроллера ИИ агару
+                    agarControllers.add(new AIAgarController(this, agar));
+                    // Добавление агара в список агар
+                    agarsList.add(agar);
+                }
+            }
+            
+            agarGroup = newAgarGroup;
         }
     }
     
