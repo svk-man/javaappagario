@@ -110,7 +110,7 @@ public class CollisionManager {
         if (first == game.playerSprite()) {
             // Поедание агара игроком
             game.playerSprite().incrementCollectedAgar();
-            if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size() + 1)) {
+            if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size() + 1) && !game.playerSprite().isMaxSize()){
                 game.playerSprite().incrementSize();
             }
             
@@ -122,7 +122,7 @@ public class CollisionManager {
 
             if (index > -1) {
                 game.botSprite(index).incrementCollectedAgar();
-                if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size() + 1)) {
+                if (game.botSprite(index).agarCollected() == Math.pow(2, game.botSprite(index).size() + 1) && !game.botSprite(index).isMaxSize()) {
                     game.botSprite(index).incrementSize();
                 }
             

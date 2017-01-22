@@ -49,6 +49,11 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
     }
     
     /**
+     * Предельный размер клетки, больше которого нельзя набрать
+     */
+    static final int MAX_SIZE = 3;
+    
+    /**
      * Размер спрайта
      */
     private int size = 0;
@@ -73,7 +78,20 @@ public class Sprite extends com.golden.gamedev.object.Sprite {
      * Устанавливает размер спрайта
      */
     public void setSize(int size) {
-        this.size = size;
+        if(size < game.models.Sprite.MAX_SIZE) {
+            this.size = size;
+        } else {
+            this.size = game.models.Sprite.MAX_SIZE;
+        }
+    }
+    
+    /**
+     * Проверяет, установлен ли максимальный размер
+     * 
+     * @return - результат проверки (boolean)
+     */
+    public boolean isMaxSize() {
+        return this.size == game.models.Sprite.MAX_SIZE;
     }
     
     /**
