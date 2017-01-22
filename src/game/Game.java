@@ -11,6 +11,7 @@ import game.controllers.AISpriteController;
 import game.controllers.BasicSpriteController;
 import game.controllers.PlayerSpriteController;
 import game.models.Agar;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,6 +43,31 @@ public class Game extends com.golden.gamedev.Game {
      * Объявление конца игры
      */
     boolean isGameOver = false;
+    
+    /**
+     * Цвет персонажа игрока
+     */
+    Color playerColor = Color.green;
+    
+    /**
+     * Список возможных цветов персонажа
+     */
+    ArrayList<Color> playerColorList = new ArrayList<>(Arrays.asList(
+        Color.black,
+        Color.blue,
+        Color.cyan,
+        Color.gray,
+        Color.green,
+        Color.lightGray,
+        Color.magenta,
+        Color.orange,
+        Color.pink,
+        Color.red,
+        Color.white,
+        Color.yellow,
+        new Color(153, 51, 153),
+        new Color(0, 255, 0)
+    ));
     
     /**
      * Полная ширина поля
@@ -268,7 +294,7 @@ public class Game extends com.golden.gamedev.Game {
                 // Настройка параметров
                 playerSprite.setSpeed(0.1);
                 // Установка представления
-                playerSprite.getSpriteView().setColor(Color.GREEN);
+                playerSprite.getSpriteView().setColor(playerColor);
                 playerSprite.getSpriteView().setIcon(playerImage);
                 // Установка позиции
                 playerSprite.setPosition(new Point(320, 240));
@@ -383,6 +409,9 @@ public class Game extends com.golden.gamedev.Game {
             } else {
                 if (keyPressed(KeyEvent.VK_SPACE)) {
                     this.initiateStartGame();
+                }
+                if (click()) {
+                    playerColor = this.identifyColorByClickOnScene(getMouseX(), getMouseY(), 220, 220, 220, 20, playerColorList);
                 }
             }
         }
@@ -617,13 +646,101 @@ public class Game extends com.golden.gamedev.Game {
         Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
         GameFont f = gfm.getFont(font);
         g.setColor(Color.BLUE);
-        f.drawString(g, "AGARIO", 200, 100);
+        f.drawString(g, "AGARIO", 200, 20);
+        
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        f = gfm.getFont(font);
+        f.drawString(g, "Цвет вашего персонажа", 170, 110);
+        
+        g.setColor(playerColor);
+        g.fillRect(310, 150, 30, 30);
+        g.setColor(playerColor.darker());
+        g.setStroke(new BasicStroke(2));
+        g.drawRect(310, 150, 30, 30);
+        
+        g.setColor(Color.BLUE);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        f = gfm.getFont(font);
+        f.drawString(g, "Выбрать другой цвет", 213, 190);
+        
+        this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
+        
+        g.setColor(Color.BLUE);
+        font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        f = gfm.getFont(font);
+        f.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
+        
         font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
         f = gfm.getFont(font);
-        f.drawString(g, "PLAY GAME", 165, 200);
+        f.drawString(g, "PLAY GAME", 155, 320);
         font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
         f = gfm.getFont(font);
-        f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 300);
+        f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
+    }
+    
+    /**
+     * Отрисовать прямоугольники, заполненные цветом, в заданной области
+     * 
+     * @param g - графический объект, на котором будем рисовать
+     * @param x - начальная точка отсчета (координата x)
+     * @param y - начальная точка отсчета (координата y)
+     * @param areaWidth - ширина области, которую нужно заполнить прямоугольниками
+     * @param rectWidth - ширина заполняемого прямоугольника
+     * @param colors - список цветов для заполнения
+     */
+    private void drawColorRectangles(Graphics2D g, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
+        int cols = areaWidth / (rectWidth + 10);
+        int rows = colors.size() / cols + 1;
+        int padding = (areaWidth - (cols * rectWidth)) / cols;
+        
+        int i = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (i < colors.size()) {
+                    g.setColor(colors.get(i));
+                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
+                    g.setColor(colors.get(i).darker());
+                    g.setStroke(new BasicStroke(2));
+                    g.drawRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
+                    i++;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Определить цвет прямоугольника по клику в области сцены
+     * 
+     * @param searchX - координата X, полученная кликом мыши
+     * @param searchY - координата Y, полученная кликом мыши
+     * @param x - начальная точка отсчета (координата x)
+     * @param y - начальная точка отсчета (координата y)
+     * @param areaWidth - ширина области, которая заполнена прямоугольниками
+     * @param rectWidth - ширина заполненного прямоугольника
+     * @param colors - список цветов, который был задан для заполнения прямоугольников
+     * @return найденный цвет (Color)
+     */
+    private Color identifyColorByClickOnScene(int searchX, int searchY, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
+        int cols = areaWidth / (rectWidth + 10);
+        int rows = colors.size() / cols + 1;
+        int padding = (areaWidth - (cols * rectWidth)) / cols;
+        
+        int i = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (i < colors.size()) {
+                    if ((searchX >= x + padding/2 + col * rectWidth + padding * col && searchX <= rectWidth + x + padding/2 + col * rectWidth + padding * col) && 
+                        (searchY >= y + padding/2 + row * rectWidth + padding * row && searchY <= rectWidth + y + padding/2 + row * rectWidth + padding * row)
+                    ) {
+                        return colors.get(i);
+                    }
+                    
+                    i++;
+                }
+            }
+        }
+        
+        return Color.green;
     }
     
     /**
