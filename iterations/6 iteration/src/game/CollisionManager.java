@@ -74,8 +74,8 @@ public class CollisionManager {
     public void checkCollision() {
         o2o.checkCollision();
         o2a.checkCollision();
-        o2s.checkCollision();
         a2o.checkCollision();
+        o2s.checkCollision();
     }
     
     /**
@@ -148,7 +148,6 @@ public class CollisionManager {
                 game.playerSprite().setSize(GameMath.degreeOfTwo(collectedAgar) == -1 ? 0 : GameMath.degreeOfTwo(collectedAgar));
                 game.botsSpriteList().remove(index);
                 spriteGroup.remove(second);
-                game.controllers().remove(index);
             }
         }
         

@@ -15,6 +15,15 @@ public class BasicSpriteController {
     Sprite sprite;
     
     /**
+     * Получить спрайт
+     * 
+     * @return спрайт (Sprite)
+     */
+    public Sprite sprite() {
+        return this.sprite;
+    }
+    
+    /**
      * Игра
      */
     Game game;

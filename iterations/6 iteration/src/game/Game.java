@@ -395,10 +395,7 @@ public class Game extends com.golden.gamedev.Game {
         
             // Обновить игровой фон
             bg.update(elapsedTime);
-        
-            // Проверить коллизии
-            manager.checkCollision();
-        
+            
             // Попытаться добавить бота
             this.trySpawnBot();
             
@@ -407,6 +404,9 @@ public class Game extends com.golden.gamedev.Game {
             if ((curTime - lastRespawnTime) / 1.0E+6 >= agarRespawnPeriod) {
                 this.trySpawnAgar();
             }
+        
+            // Проверить коллизии
+            manager.checkCollision();
         } else {
             if (isGameOver) {
                 if (keyPressed(KeyEvent.VK_SPACE)) {
@@ -842,11 +842,14 @@ public class Game extends com.golden.gamedev.Game {
     public void initiateGameOver() {
         isRunning = false;
         isGameOver = true;
-        spriteGroup.clear();
-        agarGroup.clear();
-        obstacleGroup.clear();
+        spriteGroup.reset();
+        agarGroup.reset();
+        obstacleGroup.reset();
         botsSpriteList.clear();
         controllers.clear();
+        agarControllers.clear();
+        agarsList.clear();
+        playerColor = Color.GREEN;
     }
     
     /**
