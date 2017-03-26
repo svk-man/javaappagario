@@ -1,6 +1,6 @@
 package main;
 
-import com.golden.gamedev.GameLoader;
+import lib.GameLoader;
 import game.Game;
 import java.awt.Dimension;
 
