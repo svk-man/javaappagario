@@ -28,7 +28,7 @@ public class GameLoader {
     /**
      * Игра для выполнения
      */
-    private Game game;
+    public Game game;
     
     /**
      * Конструктор игрового загрузчика

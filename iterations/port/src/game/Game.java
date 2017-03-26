@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
  * 
  * @author mypc
  */
-public class Game extends com.golden.gamedev.Game {
+public class Game extends lib.Game {
     /**
      * Запущена игра или нет
      */
@@ -432,7 +432,6 @@ public class Game extends com.golden.gamedev.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    @Override
     public void render(Graphics2D g) {
         if (isRunning) {
             bg.render(g);                   // Рендеринг игрового фона         
