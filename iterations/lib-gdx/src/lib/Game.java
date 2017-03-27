@@ -150,7 +150,10 @@ public class Game extends ApplicationAdapter {
      * @return - нажата ли?
      */
     public boolean keyPressed(int key) {
-        return Gdx.input.isKeyPressed(key);
+        if (key == 32) // SPACE
+            return Gdx.input.isKeyPressed(62);
+        
+        return false;
     }
     
     /**
