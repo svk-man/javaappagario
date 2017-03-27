@@ -9,6 +9,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -76,11 +77,21 @@ public class Game extends ApplicationAdapter {
      */
     @Override
     public void render() {
+        camera.update();
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+        update((long) (Gdx.graphics.getDeltaTime() * 1000.0));
+        
+        ctx.getBatch().setProjectionMatrix(camera.combined);
+        
+        ctx.begin();
+        renderInContext(ctx);
+        ctx.end();
     }
     
     /**
-     * Отрисовывет состояние игры
+     * Отрисовывает состояние игры
      * 
      * @param g контекст
      */    

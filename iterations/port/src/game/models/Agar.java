@@ -1,20 +1,14 @@
 package game.models;
 
 import game.GameMath;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import game.views.SpriteView;
 
 /**
  * Мост между спрайтом GTGE и интерфейсами модели и представления
  * 
  * @author mypc
  */
-public class Agar extends com.golden.gamedev.object.Sprite {
+public class Agar extends lib.Sprite {
     /**
      * Представление агара
      */

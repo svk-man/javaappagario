@@ -1,11 +1,10 @@
 package game;
 
-import com.golden.gamedev.engine.BaseInput;
-import com.golden.gamedev.object.GameFont;
-import com.golden.gamedev.object.GameFontManager;
+import lib.GameFont;
+//import lib.GameFontManager;
 import game.models.Sprite;
-import com.golden.gamedev.object.SpriteGroup;
-import com.golden.gamedev.object.background.ImageBackground;
+import lib.SpriteGroup;
+import lib.ImageBackground;
 import game.controllers.AIAgarController;
 import game.controllers.AISpriteController;
 import game.controllers.BasicSpriteController;
@@ -432,7 +431,7 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    public void render(Graphics2D g) {
+    public void renderInContext(lib.Graphics2D g) {
         if (isRunning) {
             bg.render(g);                   // Рендеринг игрового фона         
             spriteGroup.render(g);          // Рендеринг спрайтовой группы
@@ -446,9 +445,7 @@ public class Game extends lib.Game {
             }
         
             // Вывод на экран числа съеденного агара игроком
-            GameFontManager gfm = new GameFontManager();
-            Font font = new Font("Dialog", Font.PLAIN, 27);
-            GameFont f = gfm.getFont(font);
+            GameFont f = new GameFont("Dialog", Font.PLAIN, 27, Color.black);
             f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
         
             // Вывод на экран числа съеденных агар врагами
@@ -503,7 +500,7 @@ public class Game extends lib.Game {
     ) {
         int generatedCount = 0;                              // Число сгенерированных спрайтов
         // Сгенерированные спрайты
-        List <com.golden.gamedev.object.Sprite> generatedSprites = new ArrayList <com.golden.gamedev.object.Sprite>();
+        List <lib.Sprite> generatedSprites = new ArrayList <lib.Sprite>();
         
         Random r1 = new Random();
         Random r2 = new Random();
@@ -512,16 +509,16 @@ public class Game extends lib.Game {
             int y = r2.nextInt(radius);
             
             if (x >= 0 && x <= Game.totalWidth && y >= 0 && y <= Game.totalHeight) {
-                com.golden.gamedev.object.Sprite generatedSprite = new com.golden.gamedev.object.Sprite(spriteImage, x, y);
+                lib.Sprite generatedSprite = new lib.Sprite(spriteImage, x, y);
                 
                 // Определить, пересекается ли сгенерированный спрайт хотя бы
                 // с одним спрайтом из групп спрайтов, с которыми нельзя пересекаться
                 boolean collide = false;
                 for (SpriteGroup spriteGroup : spriteGroups) {
                     // Получить спрайты очередной спрайтовой группы
-                    com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+                    lib.Sprite[] sprites = spriteGroup.getSprites();
                     
-                    for (com.golden.gamedev.object.Sprite sprite : sprites) {
+                    for (lib.Sprite sprite : sprites) {
                         if (sprite != null) {
                             collide = collide || GameMath.collide(sprite, generatedSprite);
                         }
@@ -529,7 +526,7 @@ public class Game extends lib.Game {
                 }
                 
                 // Определить, пересекается ли сгенерированный спрайт с ранее сгенерированными спрайтами
-                for (com.golden.gamedev.object.Sprite sprite : generatedSprites) {
+                for (lib.Sprite sprite : generatedSprites) {
                     collide = collide || GameMath.collide(sprite, generatedSprite);
                 }
                 if (!collide) {
@@ -552,13 +549,13 @@ public class Game extends lib.Game {
             this.generateSpritesAroundPlayer(agarImage, playerSprite, 3000, this.agarRespawnQuantity, agarGroup, groupsForAgar);
         
             // Получить спрайты группы агар
-            com.golden.gamedev.object.Sprite[] sprites = agarGroup.getSprites();
+            lib.Sprite[] sprites = agarGroup.getSprites();
             
             // Сформировать временную группу агар
             SpriteGroup newAgarGroup = agarGroup;
             newAgarGroup.clear();
             
-            for (com.golden.gamedev.object.Sprite sprite : sprites) {
+            for (lib.Sprite sprite : sprites) {
                 if (sprite != null) {
                     // Создание агара
                     Agar agar = new Agar();
@@ -590,13 +587,13 @@ public class Game extends lib.Game {
             this.generateSpritesAroundPlayer(botImage, playerSprite, 3000, botsCount - botsSpriteList.size(), spriteGroup, groupsForBots);
             
             // Получить спрайты спрайтовой группы
-            com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+            lib.Sprite[] sprites = spriteGroup.getSprites();
             
             // Сформировать временную прайтовую группу
             SpriteGroup newSpriteGroup = spriteGroup;
             newSpriteGroup.clear();
             
-            for (com.golden.gamedev.object.Sprite sprite : sprites) {
+            for (lib.Sprite sprite : sprites) {
                 if (sprite != null && sprite != playerSprite && !botsSpriteList.contains(sprite)) {
                     // Создание спрайта бота
                     Sprite botSprite = new Sprite();
@@ -628,14 +625,14 @@ public class Game extends lib.Game {
      * @param searchSprite - искаемый спрайт
      * @return индекс найденного спрайта, либо -1 в случае неудачи (int)
      */
-    public int spriteInSpriteGroup(com.golden.gamedev.object.Sprite searchSprite) {
+    public int spriteInSpriteGroup(lib.Sprite searchSprite) {
         // Получить спрайты спрайтовой группы
-        com.golden.gamedev.object.Sprite[] sprites = spriteGroup.getSprites();
+        lib.Sprite[] sprites = spriteGroup.getSprites();
             
         // Определить индекс спрайта
         boolean isFound = false;
         int index = -1;
-        for (com.golden.gamedev.object.Sprite sprite : sprites) {
+        for (lib.Sprite sprite : sprites) {
             if (!isFound && sprite != null && sprite != playerSprite) {
                 index++;
                 isFound = isFound || sprite == searchSprite;
@@ -650,42 +647,48 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderStartScene(Graphics2D g) {
-        g.setColor(Color.white);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
-        GameFont f = gfm.getFont(font);
+    private void renderStartScene(lib.Graphics2D g) {
+        //g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.white);
+        //GameFontManager gfm = new GameFontManager();
+        //Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
+        //GameFont f = gfm.getFont(font);
+        GameFont f = new GameFont("Monospaced", Font.CENTER_BASELINE, 72, Color.black);
         g.setColor(Color.BLUE);
         f.drawString(g, "AGARIO", 200, 20);
         
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 24, Color.black);
         f.drawString(g, "Цвет вашего персонажа", 170, 110);
         
-        g.setColor(playerColor);
-        g.fillRect(310, 150, 30, 30);
-        g.setColor(playerColor.darker());
-        g.setStroke(new BasicStroke(2));
-        g.drawRect(310, 150, 30, 30);
+        //g.setColor(playerColor);
+        g.fillRect(310, 150, 30, 30, playerColor);
+        //g.setColor(playerColor.darker());
+        //g.setStroke(new BasicStroke(2));
+        g.fillRect(310, 150, 30, 30, playerColor.darker());
         
         g.setColor(Color.BLUE);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 18, Color.black);
         f.drawString(g, "Выбрать другой цвет", 213, 190);
         
         this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
         
         g.setColor(Color.BLUE);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 18, Color.black);
         f.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
         
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 60, Color.black);
         f.drawString(g, "PLAY GAME", 155, 320);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
-        f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 48, Color.black);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        //f = gfm.getFont(font);
         f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
     }
     
@@ -699,7 +702,7 @@ public class Game extends lib.Game {
      * @param rectWidth - ширина заполняемого прямоугольника
      * @param colors - список цветов для заполнения
      */
-    private void drawColorRectangles(Graphics2D g, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
+    private void drawColorRectangles(lib.Graphics2D g, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
         int cols = areaWidth / (rectWidth + 10);
         int rows = colors.size() / cols + 1;
         int padding = (areaWidth - (cols * rectWidth)) / cols;
@@ -708,11 +711,9 @@ public class Game extends lib.Game {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (i < colors.size()) {
-                    g.setColor(colors.get(i));
-                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
-                    g.setColor(colors.get(i).darker());
-                    g.setStroke(new BasicStroke(2));
-                    g.drawRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
+                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth, colors.get(i));
+                    //g.setStroke(new BasicStroke(2));
+                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth, colors.get(i).darker());
                     i++;
                 }
             }
@@ -759,22 +760,25 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderGameOverScene(Graphics2D g) {
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
-        GameFont f = gfm.getFont(font);
+    private void renderGameOverScene(lib.Graphics2D g) {
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.LIGHT_GRAY);
+        //GameFontManager gfm = new GameFontManager();
+        //Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
+        GameFont f = new GameFont("Monospaced", Font.CENTER_BASELINE, 72, Color.black);
+        //GameFont f = gfm.getFont(font);
         g.setColor(Color.BLUE);
         f.drawString(g, "AGARIO", 200, 100);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 60, Color.black);
+        //f = gfm.getFont(font);
         f.drawString(g, "GAME OVER", 165, 200);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 48, Color.black);
         f.drawString(g, "ИТОГОВЫЙ СЧЕТ: " + playerSprite.agarCollected(), 90, 280);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 48, Color.black);
         f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 360);
     }
     
@@ -783,21 +787,22 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderFeatureScene(Graphics2D g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
-        GameFont f = gfm.getFont(font);
-        g.setColor(Color.BLUE);
+    private void renderFeatureScene(lib.Graphics2D g) {
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
+        //GameFontManager gfm = new GameFontManager();
+        //Font font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        GameFont f = new GameFont("Monospaced", Font.CENTER_BASELINE, 24, Color.black);
+        //GameFont f = gfm.getFont(font);
+        //g.setColor(Color.BLUE);
         f.drawString(g, "Особенности игры \"AGARIO\"", 150, 0);
 
-        g.setColor(Color.BLACK);
-        g.setStroke(new BasicStroke(2));
-        g.drawRect(10, 35, this.dimensions().width - 10, 355);
+        //g.setColor(Color.BLACK);
+        //g.setStroke(new BasicStroke(2));
+        //g.fillRect(10, 35, this.dimensions().width - 10, 355, Color.BLACK);
         
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 14);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 14);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 14, Color.black);
         f.drawString(g, "1 итерация: по конечному полю двигается бактерия в направлении мыши с", 15, 35);
         f.drawString(g, "константной скоростью и находится в центре экрана.", 15, 50);
         f.drawString(g, "2 итерация:", 15, 65);
@@ -821,8 +826,9 @@ public class Game extends lib.Game {
         f.drawString(g, "- Выбор цвета игрока перед началом игры из списка заданных цветов.", 15, 335);
         f.drawString(g, "- Вывод списка возможностей игры и выбранных модификаций при запуске игры.", 15, 350);
         f.drawString(g, "- Установлен предельный размер клетки, больше которого нельзя набрать.", 15, 365);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
-        f = gfm.getFont(font);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        //f = gfm.getFont(font);
+        f = new GameFont("Monospaced", Font.CENTER_BASELINE, 48, Color.black);
         f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
     }
     
@@ -841,9 +847,9 @@ public class Game extends lib.Game {
     public void initiateGameOver() {
         isRunning = false;
         isGameOver = true;
-        spriteGroup.reset();
-        agarGroup.reset();
-        obstacleGroup.reset();
+        spriteGroup.clear();
+        agarGroup.clear();
+        obstacleGroup.clear();
         botsSpriteList.clear();
         controllers.clear();
         agarControllers.clear();

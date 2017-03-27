@@ -5,9 +5,9 @@
  */
 package game;
 
-import com.golden.gamedev.object.Sprite;
-import com.golden.gamedev.object.SpriteGroup;
-import com.golden.gamedev.object.collision.BasicCollisionGroup;
+import lib.Sprite;
+import lib.SpriteGroup;
+import lib.BasicCollisionGroup;
 
 /**
  * Менеджер коллизий
@@ -178,7 +178,6 @@ public class CollisionManager {
          */
         public ObjectToObstacleCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
             setCollisionGroup(group1, group2);
-            pixelPerfectCollision = true;
         }
         
         /**
@@ -206,7 +205,6 @@ public class CollisionManager {
          */
         public ObjectToAgarCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
             setCollisionGroup(group1, group2);
-            pixelPerfectCollision = true;
         }
 
         /**
@@ -233,7 +231,6 @@ public class CollisionManager {
          */
         public ObjectToSpriteCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
             setCollisionGroup(group1, group2);
-            pixelPerfectCollision = true;
         }
 
         /**
@@ -260,7 +257,6 @@ public class CollisionManager {
          */
         public AgarToObstacleCollisionGroup(SpriteGroup group1, SpriteGroup group2) {
             setCollisionGroup(group1, group2);
-            pixelPerfectCollision = true;
         }
 
         /**
@@ -269,7 +265,6 @@ public class CollisionManager {
          * @param first - спрайт 1 из группы 1
          * @param second - спрайт 2 из группы 2
          */
-        @Override
         public void collided(Sprite first, Sprite second) {
             CollisionManager.this.collidedAgarToObstacle(first, second);
         }  

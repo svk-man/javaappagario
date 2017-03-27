@@ -90,7 +90,7 @@ public class GameMath {
      * @param sprite - спрайт
      * @return центр спрайта (Point)
      */
-    public static Point getCenter(com.golden.gamedev.object.Sprite sprite) {
+    public static Point getCenter(lib.Sprite sprite) {
         return new Point (
             (int)(sprite.getX() + sprite.getWidth()/2),
             (int)(sprite.getY() + sprite.getHeight()/2)
@@ -104,8 +104,8 @@ public class GameMath {
      * @return результат проверки (boolean)
      */
     public static boolean collide(
-        com.golden.gamedev.object.Sprite sprite1,
-        com.golden.gamedev.object.Sprite sprite2
+        lib.Sprite sprite1,
+        lib.Sprite sprite2
     ){
         // Определяем центры спрайтов
         Point center1 = GameMath.getCenter(sprite1);
@@ -127,8 +127,8 @@ public class GameMath {
      * @return результат проверки (boolean)
      */
     public static boolean absorbe(
-        com.golden.gamedev.object.Sprite sprite1,
-        com.golden.gamedev.object.Sprite sprite2
+        lib.Sprite sprite1,
+        lib.Sprite sprite2
     ){
         // Определяем центры спрайтов
         Point center1 = GameMath.getCenter(sprite1);
