@@ -99,7 +99,9 @@ public class SpriteGroup {
      * @return массив спрайтов
      */
     public Sprite[] getSprites() {
-        return (Sprite[]) list.toArray();
+        Sprite[] spriteArr = new Sprite[list.size()];
+        spriteArr = list.toArray(spriteArr);
+        return spriteArr;
     }
     
     /**
