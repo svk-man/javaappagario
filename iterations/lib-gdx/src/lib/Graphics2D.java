@@ -64,7 +64,8 @@ public class Graphics2D {
                                                             color.getAlpha() / 255.0f));
     }
     
-    Texture texture;
+    Texture[] textureBuf = new Texture[50]; //Буффер для текстур
+    int cuttentTex = 0;
     public void fillRect(int x, int y, int width, int height, Color color) {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         pixmap.setColor(new com.badlogic.gdx.graphics.Color(
@@ -73,11 +74,15 @@ public class Graphics2D {
                                                             color.getBlue() / 255.0f,
                                                             color.getAlpha() / 255.0f));
         pixmap.fillRectangle(0, 0, width, height);
-        if (texture != null)
-            texture.dispose();
-        texture = new Texture(pixmap);
+        if (cuttentTex>=50) {
+            textureBuf[cuttentTex % 50].dispose();
+        }
+        textureBuf[cuttentTex % 50] = new Texture(pixmap);
         pixmap.dispose();
-        batch.draw(texture, x, y, width, height);
+        batch.draw(textureBuf[cuttentTex % 50], x, y, width, height);
+        cuttentTex++;
+        if (cuttentTex == 100)
+            cuttentTex = 50;
         //texture.dispose();
     }
 }
