@@ -9,6 +9,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -86,6 +87,7 @@ public class Game extends ApplicationAdapter {
         ctx.getBatch().setProjectionMatrix(camera.combined);
         
         ctx.begin();
+        ctx.batch.setColor(Color.WHITE);
         renderInContext(ctx);
         ctx.end();
     }
@@ -98,7 +100,7 @@ public class Game extends ApplicationAdapter {
     public void renderInContext(lib.Graphics2D g) {
         
     }
-    
+
     /**
      * Освобождение ресурсов игры
      */

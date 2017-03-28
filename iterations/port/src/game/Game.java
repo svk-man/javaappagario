@@ -467,11 +467,11 @@ public class Game extends lib.Game {
             }
         } else {
             if (isGameOver) {
-                //this.renderGameOverScene(g);
+                this.renderGameOverScene(g);
             } else if(isFeatureList) {
-                //this.renderFeatureScene(g);
+                this.renderFeatureScene(g);
             } else {
-                //this.renderStartScene(g);
+                this.renderStartScene(g);
             }
         }
     }
@@ -655,13 +655,13 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderStartScene(lib.Graphics2D g) {
+    public void renderStartScene(lib.Graphics2D g) {
         g.setColor(Color.white);
-        //g.fillRect(0, 0, getWidth(), getHeight(), Color.YELLOW);
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.YELLOW);
         //GameFontManager gfm = new GameFontManager();
         GameFont font = new GameFont("Monospaced", Font.CENTER_BASELINE, 72, Color.BLACK);
         //GameFont f = gfm.getFont(font);
-        g.setColor(Color.BLUE);
+        //g.setColor(Color.BLUE);
         font.drawString(g, "AGARIO", 200, 20);
         
         //font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
@@ -674,14 +674,14 @@ public class Game extends lib.Game {
         //g.setStroke(new BasicStroke(2));
         //g.drawRect(310, 150, 30, 30);
         
-        g.setColor(Color.BLUE);
+        //g.setColor(Color.BLUE);
         //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
         //f = gfm.getFont(font);
         //f.drawString(g, "Выбрать другой цвет", 213, 190);
         
         //this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
         
-        g.setColor(Color.BLUE);
+        //g.setColor(Color.BLUE);
         //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
         //f = gfm.getFont(font);
         //f.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
@@ -764,13 +764,13 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderGameOverScene(lib.Graphics2D g) {
+    public void renderGameOverScene(lib.Graphics2D g) {
         g.setColor(Color.LIGHT_GRAY);
         //g.fillRect(0, 0, getWidth(), getHeight());
         //GameFontManager gfm = new GameFontManager();
         Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
         //GameFont f = gfm.getFont(font);
-        g.setColor(Color.BLUE);
+        //g.setColor(Color.BLUE);
         //f.drawString(g, "AGARIO", 200, 100);
         font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
         //f = gfm.getFont(font);
@@ -788,16 +788,16 @@ public class Game extends lib.Game {
      * 
      * @param g - графический объект рендеринга игры
      */
-    private void renderFeatureScene(lib.Graphics2D g) {
+    public void renderFeatureScene(lib.Graphics2D g) {
         //g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
         //GameFontManager gfm = new GameFontManager();
         Font font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
         //GameFont f = gfm.getFont(font);
-        g.setColor(Color.BLUE);
+        //g.setColor(Color.BLUE);
         //f.drawString(g, "Особенности игры \"AGARIO\"", 150, 0);
 
-        g.setColor(Color.BLACK);
+        //g.setColor(Color.BLACK);
         //g.setStroke(new BasicStroke(2));
         //g.drawRect(10, 35, this.dimensions().width - 10, 355);
         
