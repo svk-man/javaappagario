@@ -453,18 +453,18 @@ public class Game extends lib.Game {
         
             // Вывод на экран числа съеденного агара игроком
             //GameFontManager gfm = new GameFontManager();
-            Font font = new Font("Dialog", Font.PLAIN, 27);
+            GameFont font = new GameFont(27, Color.BLACK);
             //GameFont f = gfm.getFont(font);
-            //f.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
+            font.drawString(g, "Число съеденного агара: " + String.valueOf(playerSprite.agarCollected()), 0, 0);
         
             // Вывод на экран числа съеденных агар врагами
             if (botsSpriteList.size() > 0) {
-                //f.drawString(g, "У врагов:", 0, 50);
+                font.drawString(g, "У врагов:", 0, 50);
             }
         
             for(int i = 0; i < botsSpriteList.size(); i++) {
                 String text = "Враг " + String.valueOf(i) + ": " + String.valueOf(botsSpriteList.get(i).agarCollected());
-                //f.drawString(g, text, 0, i * 50 + 100);
+                font.drawString(g, text, 0, i * 50 + 100);
             }
         } else {
             /*
@@ -683,14 +683,14 @@ public class Game extends lib.Game {
         g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight(), Color.YELLOW);
         //GameFontManager gfm = new GameFontManager();
-        GameFont font = new GameFont("Monospaced", Font.CENTER_BASELINE, 72, Color.BLACK);
+        GameFont font = new GameFont(72, Color.BLACK);
         //GameFont f = gfm.getFont(font);
-        //g.setColor(Color.BLUE);
+        font = new GameFont(72, Color.BLUE);
         font.drawString(g, "AGARIO", 200, 20);
         
-        //font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        font = new GameFont(24, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "Цвет вашего персонажа", 170, 110);
+        font.drawString(g, "Цвет вашего персонажа", 170, 110);
         
         g.setColor(playerColor);
         //g.fillRect(310, 150, 30, 30);
@@ -699,23 +699,23 @@ public class Game extends lib.Game {
         //g.drawRect(310, 150, 30, 30);
         
         //g.setColor(Color.BLUE);
-        //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        font = new GameFont(18, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "Выбрать другой цвет", 213, 190);
+        font.drawString(g, "Выбрать другой цвет", 213, 190);
         
         //this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
         
         //g.setColor(Color.BLUE);
-        //font = new Font("Monospaced", Font.CENTER_BASELINE, 18);
+        font = new GameFont(18, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
+        font.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
         
-        //font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        font = new GameFont(60, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "PLAY GAME", 155, 320);
-        //font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        font.drawString(g, "PLAY GAME", 155, 320);
+        font = new GameFont(48, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
+        font.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
     }
     
     /**
@@ -792,19 +792,19 @@ public class Game extends lib.Game {
         g.setColor(Color.LIGHT_GRAY);
         //g.fillRect(0, 0, getWidth(), getHeight());
         //GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 72);
+        GameFont font = new GameFont(72, Color.BLUE);
         //GameFont f = gfm.getFont(font);
         //g.setColor(Color.BLUE);
-        //f.drawString(g, "AGARIO", 200, 100);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 60);
+        font.drawString(g, "AGARIO", 200, 100);
+        font = new GameFont(60, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "GAME OVER", 165, 200);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        font.drawString(g, "GAME OVER", 165, 200);
+        font = new GameFont(48, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "ИТОГОВЫЙ СЧЕТ: " + playerSprite.agarCollected(), 90, 280);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        font.drawString(g, "ИТОГОВЫЙ СЧЕТ: " + playerSprite.agarCollected(), 90, 280);
+        font = new GameFont(48, Color.BLUE);
         //f = gfm.getFont(font);
-        //f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 360);
+        font.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 120, 360);
     }
     
     /**
@@ -814,45 +814,47 @@ public class Game extends lib.Game {
      */
     public void renderFeatureScene(lib.Graphics2D g) {
         //g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
+        //g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
         //GameFontManager gfm = new GameFontManager();
-        Font font = new Font("Monospaced", Font.CENTER_BASELINE, 24);
+        GameFont font = new GameFont(24, Color.BLUE);
         //GameFont f = gfm.getFont(font);
         //g.setColor(Color.BLUE);
-        //f.drawString(g, "Особенности игры \"AGARIO\"", 150, 0);
+        font.drawString(g, "Особенности игры \"AGARIO\"", 150, 0);
 
         //g.setColor(Color.BLACK);
         //g.setStroke(new BasicStroke(2));
         //g.drawRect(10, 35, this.dimensions().width - 10, 355);
         
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 14);
+        //font = new Font("Monospaced", Font.CENTER_BASELINE, 14);
         //f = gfm.getFont(font);
-        //f.drawString(g, "1 итерация: по конечному полю двигается бактерия в направлении мыши с", 15, 35);
-        //f.drawString(g, "константной скоростью и находится в центре экрана.", 15, 50);
-        //f.drawString(g, "2 итерация:", 15, 65);
-        //f.drawString(g, "- Размер поля - произвольный.", 15, 80);
-        //f.drawString(g, "- Реализация препятствий и их случайной расстановки на поле.", 15, 95);
-        //f.drawString(g, "- Реализация объекта агара и его случайного появления на поле. У агара есть", 15, 110);
-        //f.drawString(g, "лимит по количеству объектов на поле. Агар появляется спустя определенный", 15, 125);
-        //f.drawString(g, "промежуток времени и появляется на части поля, но не под игроком.", 15, 140);
-        //f.drawString(g, "- Реализация поглощения агара игроком.", 15, 155);
-        //f.drawString(g, "3 итерация:", 15, 170);
-        //f.drawString(g, "- Реализация изменения размера игрока и врагов в нелинейной зависимости", 15, 185);
-        //f.drawString(g, "от числа съеденного агара.", 15, 200);
-        //f.drawString(g, "- Реализация счетчика агара и его отображения.", 15, 215);
-        //f.drawString(g, "4 итерация:", 15, 230);
-        //f.drawString(g, "- Реализация появления новых врагов по мере исчезания старых.", 15, 245);
-        //f.drawString(g, "- Реализация поглощения врагов.", 15, 260);
-        //f.drawString(g, "- Реализация экрана поражения в игре и возможности начать новую игру (по", 15, 275);
-        //f.drawString(g, "нажатию на клавишу клавиатуры).", 15, 290);
-        //f.drawString(g, "5 итерация: еда может двигаться.", 15, 305);
-        //f.drawString(g, "6 итерация:", 15, 320);
-        //f.drawString(g, "- Выбор цвета игрока перед началом игры из списка заданных цветов.", 15, 335);
-        //f.drawString(g, "- Вывод списка возможностей игры и выбранных модификаций при запуске игры.", 15, 350);
-        //f.drawString(g, "- Установлен предельный размер клетки, больше которого нельзя набрать.", 15, 365);
-        font = new Font("Monospaced", Font.CENTER_BASELINE, 48);
+        font = new GameFont(14, Color.BLACK);
+        font.drawString(g, "1 итерация: по конечному полю двигается бактерия в направлении мыши с", 15, 35);
+        font.drawString(g, "константной скоростью и находится в центре экрана.", 15, 50);
+        font.drawString(g, "2 итерация:", 15, 65);
+        font.drawString(g, "- Размер поля - произвольный.", 15, 80);
+        font.drawString(g, "- Реализация препятствий и их случайной расстановки на поле.", 15, 95);
+        font.drawString(g, "- Реализация объекта агара и его случайного появления на поле. У агара есть", 15, 110);
+        font.drawString(g, "лимит по количеству объектов на поле. Агар появляется спустя определенный", 15, 125);
+        font.drawString(g, "промежуток времени и появляется на части поля, но не под игроком.", 15, 140);
+        font.drawString(g, "- Реализация поглощения агара игроком.", 15, 155);
+        font.drawString(g, "3 итерация:", 15, 170);
+        font.drawString(g, "- Реализация изменения размера игрока и врагов в нелинейной зависимости", 15, 185);
+        font.drawString(g, "от числа съеденного агара.", 15, 200);
+        font.drawString(g, "- Реализация счетчика агара и его отображения.", 15, 215);
+        font.drawString(g, "4 итерация:", 15, 230);
+        font.drawString(g, "- Реализация появления новых врагов по мере исчезания старых.", 15, 245);
+        font.drawString(g, "- Реализация поглощения врагов.", 15, 260);
+        font.drawString(g, "- Реализация экрана поражения в игре и возможности начать новую игру (по", 15, 275);
+        font.drawString(g, "нажатию на клавишу клавиатуры).", 15, 290);
+        font.drawString(g, "5 итерация: еда может двигаться.", 15, 305);
+        font.drawString(g, "6 итерация:", 15, 320);
+        font.drawString(g, "- Выбор цвета игрока перед началом игры из списка заданных цветов.", 15, 335);
+        font.drawString(g, "- Вывод списка возможностей игры и выбранных модификаций при запуске игры.", 15, 350);
+        font.drawString(g, "- Установлен предельный размер клетки, больше которого нельзя набрать.", 15, 365);
+        font = new GameFont(48, Color.BLACK);
         //f = gfm.getFont(font);
-        //f.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
+        font = new GameFont(24, Color.BLUE);
+        font.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
     }
     
     /**
