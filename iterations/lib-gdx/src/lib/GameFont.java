@@ -67,4 +67,11 @@ public class GameFont {
             py
         );
     }
+    
+    public void clear () {
+        if (font != null) {
+            font.dispose();
+            font = null;
+        }
+    }
 }
