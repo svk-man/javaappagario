@@ -26,8 +26,8 @@ public class GameFont {
      */
     BitmapFont font;
     
-    final String fontChars = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";    
-    
+    final String FONT_CHARACTERS = "абвгдежзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";    
+    final String FONT_PATH = "fonts/Comfortaa-Regular.ttf";
     /**
      * Создает новый игровой шрифт
      * 
@@ -36,22 +36,18 @@ public class GameFont {
      * @param size размер шрифта
      * @param clr  цвет
      */
-    public GameFont(String fontName, int attrs, int size, java.awt.Color clr) {
-        //final String FONT_PATH = "fonts/Comfortaa-Regular.ttf";
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONT_PATH));
-        //FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        //parameter.characters = fontChars;
-        //parameter.size = 15;
-        //parameter.color = Color.BLACK;
-        //font = generator.generateFont(parameter);
-        //generator.dispose();
-        font = new BitmapFont();
-        font.setColor(new Color(
-                clr.getRed() / 255.0f, 
-                clr.getGreen() / 255.0f,
-                clr.getBlue() / 255.0f,
-                clr.getAlpha() / 255.0f
-        ));
+    public GameFont(int attrs, int size, java.awt.Color color) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONT_PATH));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.characters = FONT_CHARACTERS;
+        parameter.size = size;
+        parameter.color = new com.badlogic.gdx.graphics.Color(
+                                                            color.getRed() / 255.0f, 
+                                                            color.getGreen() / 255.0f,
+                                                            color.getBlue() / 255.0f,
+                                                            color.getAlpha() / 255.0f);
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
     
     /**
