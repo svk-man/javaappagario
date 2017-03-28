@@ -431,6 +431,7 @@ public class Game extends lib.Game {
         }
     }
 
+    boolean[] sceneRendered = {false, false, false};
     /**
      * Рендеринг игровых объектов на экран
      * 
@@ -466,9 +467,32 @@ public class Game extends lib.Game {
                 //f.drawString(g, text, 0, i * 50 + 100);
             }
         } else {
+            /*
+            if (isGameOver) {
+                if (!sceneRendered[0]){
+                    this.renderGameOverScene(g);
+                    sceneRendered[0] = true;
+                    sceneRendered[1] = false;
+                    sceneRendered[2] = false;
+                }
+            } else if(isFeatureList) {
+                if (!sceneRendered[1]){                
+                    this.renderFeatureScene(g);
+                    sceneRendered[0] = false;
+                    sceneRendered[1] = true;
+                    sceneRendered[2] = false;
+                }
+            } else {
+                if (!sceneRendered[2]){ 
+                    this.renderStartScene(g);
+                    sceneRendered[0] = false;
+                    sceneRendered[1] = false;
+                    sceneRendered[2] = true;
+                }
+            }*/
             if (isGameOver) {
                 this.renderGameOverScene(g);
-            } else if(isFeatureList) {
+            } else if(isFeatureList) {  
                 this.renderFeatureScene(g);
             } else {
                 this.renderStartScene(g);

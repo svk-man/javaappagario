@@ -64,6 +64,7 @@ public class Graphics2D {
                                                             color.getAlpha() / 255.0f));
     }
     
+    Texture texture;
     public void fillRect(int x, int y, int width, int height, Color color) {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         pixmap.setColor(new com.badlogic.gdx.graphics.Color(
@@ -72,8 +73,11 @@ public class Graphics2D {
                                                             color.getBlue() / 255.0f,
                                                             color.getAlpha() / 255.0f));
         pixmap.fillRectangle(0, 0, width, height);
-        Texture texture = new Texture(pixmap);
+        if (texture != null)
+            texture.dispose();
+        texture = new Texture(pixmap);
         pixmap.dispose();
         batch.draw(texture, x, y, width, height);
+        //texture.dispose();
     }
 }

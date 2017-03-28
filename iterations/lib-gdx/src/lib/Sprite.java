@@ -84,6 +84,8 @@ public class Sprite {
      * @param bi изображение
      */
     public final void setImage(BufferedImage bi) {
+        if (texture != null)
+            texture.dispose();
         texture = TextureManager.getTexture(bi);
         shape = new lib.collision.Ellipse(
                 x + texture.getWidth() / 2, 
