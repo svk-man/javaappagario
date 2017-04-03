@@ -795,8 +795,7 @@ public class Game extends lib.Game {
      * @param g - графический объект рендеринга игры
      */
     public void renderGameOverScene(lib.Graphics2D g) {
-        g.setColor(Color.LIGHT_GRAY);
-        //g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.LIGHT_GRAY);
         //GameFontManager gfm = new GameFontManager();
         font72Blue.drawString(g, "AGARIO", 200, 100);
         //f = gfm.getFont(font);
