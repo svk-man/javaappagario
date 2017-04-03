@@ -32,7 +32,7 @@ public class GameFont {
      * Создает новый игровой шрифт
      * 
      * @param size размер шрифта
-     * @param clr  цвет
+     * @param color  цвет
      */
     public GameFont(int size, java.awt.Color color) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(FONT_PATH));
