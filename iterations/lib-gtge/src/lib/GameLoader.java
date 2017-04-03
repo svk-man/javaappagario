@@ -5,7 +5,6 @@
  */
 package lib;
 
-import com.golden.gamedev.Game;
 import java.awt.Dimension;
 
 /**

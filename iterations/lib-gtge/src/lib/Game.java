@@ -69,4 +69,41 @@ public class Game extends com.golden.gamedev.Game {
     public int getMouseY() {
         return super.getMouseY();
     }
+    
+    /**
+     * Получение ширины окна
+     * 
+     * @return 
+     */
+    public int getWidth() {
+        return super.getWidth();
+    }
+    
+    /**
+     * Получение высоты окна
+     * 
+     * @return 
+     */
+    public int getHeight() {
+        return super.getHeight();
+    }
+    
+    /**
+     * Определяет нажатие указанной кнопки
+     * 
+     * @param key - ключ кнопки
+     * @return - нажата ли?
+     */
+    public boolean keyPressed(int key) {
+        return super.keyPressed(key);
+    }
+    
+    /**
+     * Определяет клик мыши
+     * 
+     * @return - был ли клик?
+     */
+    public boolean click() {
+        return super.click();
+    }
 }

@@ -5,6 +5,8 @@
  */
 package lib;
 
+import java.awt.Color;
+
 /**
  * Графический контекст для рисования
  * 
@@ -33,5 +35,19 @@ public class Graphics2D {
      */
     public java.awt.Graphics2D get() {
         return g;
+    }
+    
+    /**
+     * Отрисовка заполненного прямоугольника
+     * 
+     * @param x - координата x
+     * @param y - координата y
+     * @param width - ширина прямоугольника
+     * @param height - высота прямоугольника
+     * @param color - цвет
+     */
+    public void fillRect(int x, int y, int width, int height, Color color) {
+        g.setColor(color);
+        g.fillRect(x, y, width, height);
     }
 }
