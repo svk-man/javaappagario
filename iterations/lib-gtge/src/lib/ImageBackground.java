@@ -18,9 +18,27 @@ public class ImageBackground extends com.golden.gamedev.object.background.ImageB
      * Конструктор игрового фона
      * 
      * @param bi - фоновое изображение
+     * @param width - ширина игрового фона
+     * @param height - высота игрового фона
      */
-    public ImageBackground(BufferedImage bi) {
+    public ImageBackground(BufferedImage bi, int width, int height) {
         super(bi);
+
+        BufferedImage tile = bi;
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        java.awt.Graphics2D g2d = img.createGraphics();
+        int tileWidth = tile.getWidth();
+        int tileHeight = tile.getHeight();
+            
+        for (int y = 0; y < height; y += tileHeight) {
+            for (int x = 0; x < width; x += tileWidth) {
+                g2d.drawImage(tile, x, y, null);
+            }
+        }
+            
+        g2d.dispose();
+
+        super.setImage(img);
     }
     
     /**

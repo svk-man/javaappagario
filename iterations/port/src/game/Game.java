@@ -321,28 +321,9 @@ public class Game extends lib.Game {
                 trySpawnAgar();
             
                 // Генерация игрового фона
-                bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")));
+                bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")), this.dimensions().width, this.dimensions().height);
                 bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
                 bg.setTotalClip(totalWidth, totalHeight);
-                /*** Предыдущий фон ***/
-                //BufferedImage tile = ImageIO.read(new File("resources/background.jpg"));
-                //BufferedImage bi = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
-                //Graphics2D g2d = bi.createGraphics();
-                //int tileWidth = tile.getWidth();
-                //int tileHeight = tile.getHeight();
-            
-                //for (int y = 0; y < totalHeight; y += tileHeight) {
-                    //for (int x = 0; x < totalWidth; x += tileWidth) {
-                        //g2d.drawImage(tile, x, y, null);
-                    //}
-                //}
-            
-                //g2d.dispose();
-                //bg = new ImageBackground(bi);
-
-                // Установка размеров viewport
-                //bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
-                /*** ---Предыдущий фон--- ***/
 
                 // Прикрепить спрайтовую группу к игровому фону
                 spriteGroup.setBackground(bg);
