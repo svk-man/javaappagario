@@ -849,9 +849,9 @@ public class Game extends lib.Game {
     public void initiateGameOver() {
         isRunning = false;
         isGameOver = true;
-        //spriteGroup.reset();
-        //agarGroup.reset();
-        //obstacleGroup.reset();
+        spriteGroup.reset();
+        agarGroup.reset();
+        obstacleGroup.reset();
         botsSpriteList.clear();
         controllers.clear();
         agarControllers.clear();

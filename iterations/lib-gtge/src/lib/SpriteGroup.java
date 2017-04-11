@@ -118,4 +118,11 @@ public class SpriteGroup extends com.golden.gamedev.object.SpriteGroup {
         for (size = 0; size <= sprites.length && sprites[size] != null; size++);
         return size;
     }
+    
+    /**
+     * Осуществляет сброс спрайтовой группы
+     */
+    public void reset() {
+        super.reset();
+    }
 }
