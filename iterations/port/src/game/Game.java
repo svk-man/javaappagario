@@ -321,7 +321,7 @@ public class Game extends lib.Game {
                 trySpawnAgar();
             
                 // Генерация игрового фона
-                bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")), this.dimensions().width, this.dimensions().height);
+                bg = new ImageBackground(ImageIO.read(new File("resources/background.jpg")), totalWidth, totalHeight);
                 bg.setClip(0, 0, this.dimensions().width, this.dimensions().height);
                 bg.setTotalClip(totalWidth, totalHeight);
 
