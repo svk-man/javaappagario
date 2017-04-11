@@ -53,6 +53,9 @@ public class ImageBackground {
      * @param bi изображение
      */
     public ImageBackground(BufferedImage bi) {
+        if (texture != null){
+            texture.dispose();
+        }
         texture = TextureManager.getTexture(bi);
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }

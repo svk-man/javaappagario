@@ -64,7 +64,8 @@ public class Graphics2D {
                                                             color.getAlpha() / 255.0f));
     }
     
-    Texture[] textureBuf = new Texture[50]; //Буффер для текстур
+    int BUF_SISE = 50; 
+    Texture[] textureBuf = new Texture[BUF_SISE]; //Буффер для текстур
     int cuttentTex = 0;
     public void fillRect(int x, int y, int width, int height, Color color) {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -74,15 +75,23 @@ public class Graphics2D {
                                                             color.getBlue() / 255.0f,
                                                             color.getAlpha() / 255.0f));
         pixmap.fillRectangle(0, 0, width, height);
-        if (cuttentTex>=50) {
-            textureBuf[cuttentTex % 50].dispose();
+        if (cuttentTex>=BUF_SISE) {
+            textureBuf[cuttentTex % BUF_SISE].dispose();
         }
-        textureBuf[cuttentTex % 50] = new Texture(pixmap);
+        textureBuf[cuttentTex % BUF_SISE] = new Texture(pixmap);
         pixmap.dispose();
-        batch.draw(textureBuf[cuttentTex % 50], x, y, width, height);
+        batch.draw(textureBuf[cuttentTex % BUF_SISE], x, y, width, height);
         cuttentTex++;
         if (cuttentTex == 100)
-            cuttentTex = 50;
+            cuttentTex = BUF_SISE;
         //texture.dispose();
+    }
+    
+    public void clear () {
+        for (int i = 0; i < BUF_SISE; i++){
+            if (textureBuf[i] != null){
+                textureBuf[i].dispose();
+            }
+        }
     }
 }

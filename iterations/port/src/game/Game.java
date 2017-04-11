@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -643,7 +644,7 @@ public class Game extends lib.Game {
             newSpriteGroup.clear();
             
             for (lib.Sprite sprite : sprites) {
-                if (sprite != null && sprite != playerSprite && !botsSpriteList.contains(sprite)) {
+                if (sprite != null && !Objects.equals(sprite, playerSprite) && !botsSpriteList.contains(sprite)) {
                     // Создание спрайта бота
                     Sprite botSprite = new Sprite();
                     // Установка параметров
@@ -682,9 +683,9 @@ public class Game extends lib.Game {
         boolean isFound = false;
         int index = -1;
         for (lib.Sprite sprite : sprites) {
-            if (!isFound && sprite != null && sprite != playerSprite) {
+            if (!isFound && sprite != null && !Objects.equals(sprite, playerSprite)) {
                 index++;
-                isFound = isFound || sprite == searchSprite;
+                isFound = isFound || Objects.equals(sprite, searchSprite);
             }
         }
         
@@ -698,7 +699,8 @@ public class Game extends lib.Game {
      * @param g - графический объект рендеринга игры
      */
     public void renderStartScene(lib.Graphics2D g) {
-        g.setColor(Color.white);
+        
+        //g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight(), Color.YELLOW);
         //GameFontManager gfm = new GameFontManager();
         //GameFont f = gfm.getFont(font);
@@ -707,9 +709,9 @@ public class Game extends lib.Game {
         //f = gfm.getFont(font);
         font24Blue.drawString(g, "Цвет вашего персонажа", 170, 110);
         
-        g.setColor(playerColor);
+        //g.setColor(playerColor);
         //g.fillRect(310, 150, 30, 30);
-        g.setColor(playerColor.darker());
+        //g.setColor(playerColor.darker());
         //g.setStroke(new BasicStroke(2));
         //g.drawRect(310, 150, 30, 30);
         

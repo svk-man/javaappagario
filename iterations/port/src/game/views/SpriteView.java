@@ -49,6 +49,9 @@ public class SpriteView {
             int max = (int)(Math.max(icon.getWidth(), icon.getHeight()) * coef);
             BufferedImage bi = new BufferedImage(max, max, BufferedImage.TYPE_INT_ARGB);
 
+            if (g2d != null){
+                g2d.dispose();
+            }
             // Отрисовать овал
             g2d = bi.createGraphics();               
             g2d.setColor(color);
@@ -69,6 +72,7 @@ public class SpriteView {
 
             // Установка изображения спрайту
             sprite.setImage(bi);
+            
         }
     }
     

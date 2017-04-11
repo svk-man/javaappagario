@@ -5,6 +5,7 @@
  */
 package game;
 
+import java.util.Objects;
 import lib.Sprite;
 import lib.SpriteGroup;
 import lib.BasicCollisionGroup;
@@ -107,7 +108,7 @@ public class CollisionManager {
      * @param second - спрайт 2 из группы 2
      */
     public void collidedObjectToAgar(Sprite first, Sprite second) {
-        if (first == game.playerSprite()) {
+        if (Objects.equals(first, game.playerSprite())) {
             // Поедание агара игроком
             game.playerSprite().incrementCollectedAgar();
             if (game.playerSprite().agarCollected() == Math.pow(2, game.playerSprite().size() + 1) && !game.playerSprite().isMaxSize()){
@@ -138,7 +139,7 @@ public class CollisionManager {
      * @param second - спрайт 2 из группы 2
      */
     public void collidedObjectToSprite(Sprite first, Sprite second) {
-        if (first == game.playerSprite() && GameMath.absorbe(first, second)) {
+        if (Objects.equals(first, game.playerSprite()) && GameMath.absorbe(first, second)) {
             // Определить индекс 2-го спрайта
             int index = game.spriteInSpriteGroup(second);
 
@@ -151,7 +152,7 @@ public class CollisionManager {
             }
         }
         
-        if (second == game.playerSprite() && GameMath.absorbe(first, second)) {
+        if (Objects.equals(second, game.playerSprite()) && GameMath.absorbe(first, second)) {
             // Определить индекс 1-го спрайта
             int index = game.spriteInSpriteGroup(first);
             
