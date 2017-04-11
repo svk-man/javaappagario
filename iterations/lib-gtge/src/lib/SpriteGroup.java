@@ -50,8 +50,7 @@ public class SpriteGroup extends com.golden.gamedev.object.SpriteGroup {
     @Override
     public lib.Sprite[] getSprites() { //Назвать по др
         com.golden.gamedev.object.Sprite[] sprites = super.getSprites();
-        int size = 0;
-        for (size = 0; size <= sprites.length && sprites[size] != null; size++);
+        int size = getSize();
         lib.Sprite[] res = new lib.Sprite[size];
         for (int i = 0; i < size; i++){
             res[i] = (lib.Sprite) sprites[i];
@@ -114,6 +113,9 @@ public class SpriteGroup extends com.golden.gamedev.object.SpriteGroup {
      * @return размер списка
      */
     public int getSize() {
-        return super.getSprites().length;
+        com.golden.gamedev.object.Sprite[] sprites = super.getSprites();
+        int size = 0;
+        for (size = 0; size <= sprites.length && sprites[size] != null; size++);
+        return size;
     }
 }
