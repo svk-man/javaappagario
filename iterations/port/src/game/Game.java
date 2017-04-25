@@ -793,7 +793,7 @@ public class Game extends lib.Game {
      */
     public void renderFeatureScene(lib.Graphics2D g) {
         //g.setColor(Color.WHITE);
-        //g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight(), Color.WHITE);
         //GameFontManager gfm = new GameFontManager();
         //GameFont f = gfm.getFont(font);
         //g.setColor(Color.BLUE);
