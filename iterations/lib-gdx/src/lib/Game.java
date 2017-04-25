@@ -153,7 +153,7 @@ public class Game extends ApplicationAdapter {
      */
     public boolean keyPressed(int key) {
         if (key == 32) // SPACE
-            return Gdx.input.isKeyPressed(62);
+            return Gdx.input.isKeyJustPressed(62);
         
         return false;
     }
