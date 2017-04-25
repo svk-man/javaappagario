@@ -38,8 +38,8 @@ public class BasicCollisionGroup {
             List<Sprite> sprites1 = group1.toList();
             List<Sprite> sprites2 = group2.toList();
             for (int i = 0; i < sprites1.size(); i++) {
+                Sprite s1 = sprites1.get(i);
                 for (int j = 0; j < sprites2.size(); j++) {
-                    Sprite s1 = sprites1.get(i);
                     Sprite s2 = sprites2.get(j);                    
                     if (s1 != s2) {
                         if (s1.getCollisionShape().collidesWith(s2.getCollisionShape())) {
