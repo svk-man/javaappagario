@@ -61,6 +61,17 @@ public class ImageBackground {
     }
     
     /**
+     * Создает новый фон с заданным изображением
+     * 
+     * @param bi изображение
+     * @param w ширина
+     * @param h высота
+     */
+    public ImageBackground(BufferedImage bi, int w, int h) {
+        this (bi);
+    }
+    
+    /**
      * Устанавливает обрезку фона - здесь не делает ничего, только устанавливает
      * внутренние параметры
      * 
