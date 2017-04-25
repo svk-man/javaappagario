@@ -159,4 +159,8 @@ public class ImageBackground {
     public double getY() {
         return Game.currentCamera.position.y;
     }
+    
+    public Point getTotalPosition (Point p) {
+        return new Point ( (int) (p.x + getX() - viewportWidth / 2), (int) (viewportHeight / 2 - p.y + getY()));
+    }
 }

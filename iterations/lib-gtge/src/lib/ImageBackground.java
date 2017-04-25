@@ -5,6 +5,7 @@
  */
 package lib;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -110,5 +111,9 @@ public class ImageBackground extends com.golden.gamedev.object.background.ImageB
     @Override
     public double getY() {
         return super.getY();
+    }
+
+    public Point getTotalPosition(Point p) {
+        return new Point ((int) (p.x + getX()), (int) (p.y + getY()));
     }
 }

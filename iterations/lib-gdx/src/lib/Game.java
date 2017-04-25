@@ -116,7 +116,7 @@ public class Game extends ApplicationAdapter {
      * @return координата X курсора в окне
      */
     public int getMouseX() {
-        return Gdx.input.getX() - Gdx.graphics.getWidth() / 2;
+        return Gdx.input.getX();
     }
 
     /**
@@ -125,7 +125,7 @@ public class Game extends ApplicationAdapter {
      * @return координата Y курсора в окне 
      */    
     public int getMouseY() {
-        return (Gdx.graphics.getHeight() / 2 - Gdx.input.getY());
+        return (Gdx.input.getY());
     }
     
     /**

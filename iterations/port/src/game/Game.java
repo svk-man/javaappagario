@@ -506,9 +506,7 @@ public class Game extends lib.Game {
      */
     public Point mousePosition() {
         Point p = new Point(this.getMouseX(), this.getMouseY());
-        p.x += bg.getX();
-        p.y += bg.getY();
-        return p;
+        return bg.getTotalPosition(p);
     }
     
     /**
