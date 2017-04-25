@@ -106,4 +106,11 @@ public class Game extends com.golden.gamedev.Game {
     public boolean click() {
         return super.click();
     }
+    
+    /**
+     * Осуществляет сброс камеры (Пустышка)
+     */
+    public void resetCamera() {
+        
+    }
 }

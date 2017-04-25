@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.awt.Dimension;
+import java.awt.Point;
 
 /**
  * Главный класс игры
@@ -166,5 +167,12 @@ public class Game extends ApplicationAdapter {
      */
     public boolean click() {
         return Gdx.input.isButtonPressed(Buttons.LEFT);
+    }
+    
+    /**
+     * Осуществляет сброс камеры
+     */
+    public void resetCamera () {
+        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
     }
 }
