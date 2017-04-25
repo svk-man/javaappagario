@@ -691,7 +691,7 @@ public class Game extends lib.Game {
         font24Blue.drawString(g, "Цвет вашего персонажа", 170, 110);
         
         //g.setColor(playerColor);
-        //g.fillRect(310, 150, 30, 30);
+        g.fillRect(310, 150, 30, 30, playerColor);
         //g.setColor(playerColor.darker());
         //g.setStroke(new BasicStroke(2));
         //g.drawRect(310, 150, 30, 30);
@@ -699,7 +699,7 @@ public class Game extends lib.Game {
         //g.setColor(Color.BLUE);
         font18Blue.drawString(g, "Выбрать другой цвет", 213, 190);
         
-        //this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
+        this.drawColorRectangles(g, 220, 220, 220, 20, playerColorList);
         
         //g.setColor(Color.BLUE);
         font18Blue.drawString(g, "КЛИК ПО ЦВЕТУ", 257, 290);
@@ -717,7 +717,7 @@ public class Game extends lib.Game {
      * @param rectWidth - ширина заполняемого прямоугольника
      * @param colors - список цветов для заполнения
      */
-    private void drawColorRectangles(Graphics2D g, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
+    private void drawColorRectangles(lib.Graphics2D g, int x, int y, int areaWidth, int rectWidth, ArrayList<Color> colors) {
         int cols = areaWidth / (rectWidth + 10);
         int rows = colors.size() / cols + 1;
         int padding = (areaWidth - (cols * rectWidth)) / cols;
@@ -726,11 +726,11 @@ public class Game extends lib.Game {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (i < colors.size()) {
-                    g.setColor(colors.get(i));
-                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
-                    g.setColor(colors.get(i).darker());
-                    g.setStroke(new BasicStroke(2));
-                    g.drawRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
+                    //g.setColor(colors.get(i));
+                    g.fillRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth, colors.get(i));
+                    //g.setColor(colors.get(i).darker());
+                    //g.setStroke(new BasicStroke(2));
+                    //g.drawRect(x + padding/2 + col * rectWidth + padding * col, y + padding/2 + row * rectWidth + padding * row, rectWidth, rectWidth);
                     i++;
                 }
             }
