@@ -829,7 +829,7 @@ public class Game extends lib.Game {
         font14Black.drawString(g, "- Вывод списка возможностей игры и выбранных модификаций при запуске игры.", 15, 350);
         font14Black.drawString(g, "- Установлен предельный размер клетки, больше которого нельзя набрать.", 15, 365);
 
-        font24Blue.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 110, 390);
+        font24Blue.drawString(g, "НАЖМИТЕ ПРОБЕЛ", 200, 390);
     }
     
     /**
