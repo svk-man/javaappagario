@@ -119,4 +119,11 @@ public class SpriteGroup {
     public int getSize() {
         return list.size();
     }
+
+    /**
+     * Осуществляет сброс спрайтовой группы
+     */
+    public void reset() {
+        clear();
+    }
 }
