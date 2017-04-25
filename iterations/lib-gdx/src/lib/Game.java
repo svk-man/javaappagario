@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.awt.Dimension;
 
 /**
  * Главный класс игры
@@ -52,7 +53,7 @@ public class Game extends ApplicationAdapter {
         currentCamera = camera;
         
         batch = new SpriteBatch();    
-        ctx = new lib.Graphics2D(batch);
+        ctx = new lib.Graphics2D(batch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         this.initResources();
     }

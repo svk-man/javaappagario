@@ -22,11 +22,23 @@ public class Graphics2D {
     SpriteBatch batch;
     
     /**
+     * Ширина игрового окна
+     */
+    int width;
+    
+    /**
+     * Высота игрового окна
+     */
+    int height;
+                
+    /**
      * Создает новый контекст с заданным батчем
      * @param batch 
      */
-    public Graphics2D(SpriteBatch batch) {
+    public Graphics2D(SpriteBatch batch, int w, int h) {
         this.batch = batch;
+        width = w;
+        height = h;
     }
     
     /**
@@ -80,7 +92,7 @@ public class Graphics2D {
         }
         textureBuf[cuttentTex % BUF_SISE] = new Texture(pixmap);
         pixmap.dispose();
-        batch.draw(textureBuf[cuttentTex % BUF_SISE], x, y, width, height);
+        batch.draw(textureBuf[cuttentTex % BUF_SISE], x, this.height - y - height, width, height);
         cuttentTex++;
         if (cuttentTex == 100)
             cuttentTex = BUF_SISE;
