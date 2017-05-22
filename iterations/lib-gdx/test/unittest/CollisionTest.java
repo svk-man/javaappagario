@@ -132,7 +132,7 @@ public class CollisionTest {
     public void testLine() {
         {
             Line l = new Line(1, 0, 1, 1);
-            Assert.assertEquals(l.k1, 1, 0.001);
+            Assert.assertTrue(false);
             Assert.assertEquals(l.k2, 0, 0.001);
             Assert.assertEquals(l.k3, 1, 0.001);            
         }
@@ -164,9 +164,9 @@ public class CollisionTest {
     
     @Test
     public void testEllipses() {
-        Assert.assertTrue((new Ellipse(0, 0, 2, 1)).collidesWith(new Ellipse(0, 0, 2, 1)));
+        Assert.assertTrue(false);
         Assert.assertTrue((new Ellipse(0, 0, 2, 1)).collidesWith(new Ellipse(0, 3, 2, 1)));
-        Assert.assertTrue((new Ellipse(0, 0, 2, 1)).collidesWith(new Ellipse(0, 4, 2, 1)));
+        Assert.assertTrue(false);
         Assert.assertFalse((new Ellipse(0, 0, 2, 1)).collidesWith(new Ellipse(0, 5, 2, 1)));        
     }
 }
